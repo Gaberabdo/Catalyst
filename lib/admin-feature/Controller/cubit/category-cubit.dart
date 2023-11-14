@@ -1,0 +1,249 @@
+import 'package:admin_task/admin-feature/Controller/Models/brand_model.dart';
+import 'package:dio/dio.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../Core/errors/failures.dart';
+import '../../../Core/utiles/api_const.dart';
+import '../../../Core/utiles/api_service.dart';
+import '../../../Core/utiles/app_functions.dart';
+import '../Models/catalog_model.dart';
+import '../Models/product_model.dart';
+import 'category-state.dart';
+
+class CategoryCubit extends Cubit<CategoryState> {
+  CategoryCubit() : super(HomeInial());
+
+  static CategoryCubit get(context) => BlocProvider.of(context);
+  List<CatalogModel> productsList =[];
+
+  ///get item
+  Future<List<CatalogModel>> getAdminCategory(String status) async {
+    emit(HomeLoading());
+    try {
+      Response response = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalog/list?status=${status}",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      ); // Replace with your API endpoint
+
+      print("+++++++++++++response++++++++++++++");
+      print(response.data["catalogs"]);
+
+      List<dynamic> brandsJson = response.data['catalogs'];
+
+      productsList =
+          await brandsJson.map((json) => CatalogModel.fromJson(json)).toList();
+
+      print("+++++++++++++productsList++++++++++++++");
+      print('dattttttttttttttttttttttttttttttttttttttttttttttttttttttt');
+      print(productsList![0].name);
+      print(productsList!.length);
+      print('lenttttttttttttttttttttttttttttttttt');
+      emit(HomeSucess());
+      return productsList!;
+    } on Exception catch (e) {
+      if (e is DioError) {
+        emit(HomeErorr());
+        print('error');
+      }
+      return [];
+    }
+  }
+
+  //updata item
+  Future<List<CatalogModel>> updateItem({
+    String? userId,
+    String? id,
+    String? name,
+    int? weight,
+    String? details,
+    String? manufacturer,
+    int? rh,
+    int? pt,
+    int? pd,
+    context,
+  }) async {
+    emit(UpdateLoading());
+    try {
+      Response response = await DioHelper.putData(
+        url: "${ApiConst.baseUrl}admin/catalog/update?_id=$id",
+        data: {
+          "userId": userId,
+          "name": name,
+          "weight": weight,
+          "details": details,
+          "manufacturer": manufacturer,
+          "rh": rh,
+          "pt": pt,
+          "pd": pd,
+          "_id": id
+        },
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+          },
+        ),
+      );
+
+      print("+++++++++++++Response Status Code++++++++++++++");
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        print("+++++++++++++Response Message++++++++++++++");
+        print(response.data["message"]);
+
+        List<dynamic> catalogsJson = response.data['message'];
+
+        List<CatalogModel> catalogs =
+            catalogsJson.map((json) => CatalogModel.fromJson(json)).toList();
+
+        print("+++++++++++++Catalogs++++++++++++++");
+        print(catalogs);
+        emit(UpdateSucess());
+        return catalogs;
+      } else {
+        print('errorrrrrrrrrrrrrr');
+        emit(UpdataErorr());
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        await AppFunction.showErrorORWarningDialog(
+          context: context,
+          subtitle: "An error has been occured $e",
+          fct: () {},
+        );
+      }
+    }
+    return [];
+  }
+
+  //todo get brand item
+  Future<List<Brand>> getBrand() async {
+    emit(GetBrandLoading());
+    try {
+      Response response = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/brand/list",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      print(response.data["brands"]);
+      emit(GetBrandSuccess(List<Brand>.from(
+          (response.data["brands"] as List).map((e) => Brand.fromJson(e)))));
+      return List<Brand>.from(
+          (response.data["brands"] as List).map((e) => Brand.fromJson(e)));
+    } on DioException catch (error) {
+      emit(GetBrandError());
+      return List<Brand>.empty();
+    }
+  }
+
+  Future<List<ProductModel>> getProduct() async {
+    emit(GetProductLoading());
+    try {
+      Response response = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/product/list",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      print(response.data["products"]);
+      emit(GetProductSuccess(List<ProductModel>.from(
+          (response.data["products"] as List)
+              .map((e) => ProductModel.fromJson(e)))));
+      return List<ProductModel>.from((response.data["products"] as List)
+          .map((e) => ProductModel.fromJson(e)));
+    } on DioException catch (error) {
+      emit(GetProductError());
+      return List<ProductModel>.empty();
+    }
+  }
+
+  Future<void> approveRequest({
+    required String id,
+  }) async {
+    emit(RequestAdminStateLoading());
+    try {
+     await DioHelper.postData(
+        url: "${ApiConst.baseUrl}admin/catalog/approve?_id=$id",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      emit(RequestAdminStateLSuccess());
+    } on DioException catch (error) {
+      print(error.message);
+      print(error.error);
+      emit(RequestAdminStateError());
+    }
+  }
+
+  Future<void> refuseRequest({
+    required String id,
+  }) async {
+    emit(RequestAdminStateLoading());
+    try {
+      DioHelper.postData(
+        url: "${ApiConst.baseUrl}admin/catalog/refuse?_id=$id",
+        options: Options(
+          headers: {
+            'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      emit(RequestAdminStateLSuccess());
+    } on DioException catch (error) {
+      print(error.message);
+      print(error.error);
+      emit(RequestAdminStateError());
+    }
+  }
+
+
+  Future<void> deleteCatalog({
+    required String id,
+    required String state,
+  }) async {
+    emit(DeleteCatalogLoading());
+    try {
+      await DioHelper.deleteData(
+        url: "${ApiConst.baseUrl}admin/catalog/delete?_id=$id",
+        options: Options(
+          headers: {
+            'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      productsList.clear();
+      getAdminCategory(state);
+      emit(DeleteCatalogSuccess());
+    } on DioException catch (error) {
+      print(error.message);
+      print(error.error);
+      emit(DeleteCatalogError());
+    }
+  }
+}
