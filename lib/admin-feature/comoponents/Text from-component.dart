@@ -9,6 +9,7 @@ class MyTextField extends StatelessWidget {
     this.onSubmited,
     required this.validator,
     this.onChanged,
+    this.enabled,
     this.suffixIcon,
     this.height,
     required this.emailController,
@@ -17,7 +18,7 @@ class MyTextField extends StatelessWidget {
 
   Widget? prefixIcon;
   String? hintText;
-  Function? onTap;
+  Function()? onTap;
   Widget? suffixIcon;
   double? height;
   Function(String)? onSubmited;
@@ -25,8 +26,8 @@ class MyTextField extends StatelessWidget {
   Function(String)? onChanged;
 
   bool? obscureText;
+  bool? enabled;
 
-  bool? enabled = true;
 
   bool? icon;
 
@@ -47,9 +48,11 @@ class MyTextField extends StatelessWidget {
         ],
       ),
       child: TextFormField(
+          onTap: onTap ??(){},
           controller: emailController,
           onChanged: onChanged,
           validator: validator,
+          enabled: enabled ?? true,
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.grey.shade100, // Set background color

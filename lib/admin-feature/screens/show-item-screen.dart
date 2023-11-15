@@ -102,12 +102,18 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
           }
 
           if (state is RequestAdminStateLSuccess) {
-            CategoryCubit.get(context).getAdminCategory();
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-              builder: (context) {
-                return ListScreen();
-              },
-            ), (route) => false);
+            CategoryCubit.get(context).getAdminCategory().then((value) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ListScreen();
+                  },
+                ),
+                    (route) => false,
+              );
+            });
+
           }
         },
         builder: (context, state) {
