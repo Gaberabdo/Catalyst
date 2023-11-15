@@ -10,108 +10,111 @@ class MyTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Material(
-        color: Colors.white,
-        elevation: 12,
-        borderRadius: BorderRadiusDirectional.circular(20.0),
-        child: DataTable(
-            headingRowHeight: 50,
-            border: TableBorder.all(
-              style: BorderStyle.solid,
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-              width: 2
-            ),
-            dataRowHeight: 80,
-            dividerThickness: 0.0,
-            columns: const [
-              DataColumn(
-                label: Text(
-                  'Name',
-                  textAlign: TextAlign.center,
-                ),
+      scrollDirection: Axis.horizontal,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          color: Colors.white,
+          elevation: 12,
+          borderRadius: BorderRadiusDirectional.circular(20.0),
+          child: DataTable(
+              headingRowHeight: 50,
+              border: TableBorder.all(
+                style: BorderStyle.solid,
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                width: 2
               ),
-              DataColumn(
-                label: Text(
-                  'Image',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Weight',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Platinum',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Palladium',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Rhodium',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Brand',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Product',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'CatMenu',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              DataColumn(
-                label: Padding(
-                  padding: EdgeInsetsDirectional.only(start: 50),
-                  child: Text(
-                    'Action',
+              dataRowHeight: 80,
+              dividerThickness: 0.0,
+              columns: const [
+                DataColumn(
+                  label: Text(
+                    'Name',
                     textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-            ],
-            rows: model.map((model) {
-              return DataRow(cells: [
-                DataCell(Text(model.name.toString())),
-                DataCell(
-                  _buildCircleAvatar(
-                    model.image == null
-                        ? "https://tse2.mm.bing.net/th?id=OIP.z-bE3VGJQux72dFc4n6BhQHaFU&pid=Api&P=0&h=220"
-                        : model.image is String
-                            ? model.imageString.toString()
-                            : model.image!.url.toString(),
+                DataColumn(
+                  label: Text(
+                    'Image',
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                DataCell(Text(model.weight.toString())),
-                DataCell(Text(model.pt.toString())),
-                DataCell(Text(model.pd.toString())),
-                DataCell(Text(model.rh.toString())),
-                DataCell(Text(model.brand.toString())),
-                DataCell(Text(model.product.toString())),
-                DataCell(Text(model.manufacturer.toString())),
-                DataCell(buildAction(context: context, model: model)),
-              ]);
-            }).toList()),
+                DataColumn(
+                  label: Text(
+                    'Weight',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Platinum',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Palladium',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Rhodium',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Brand',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Product',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'CatMenu',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: EdgeInsetsDirectional.only(start: 50),
+                    child: Text(
+                      'Action',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+              rows: model.map((model) {
+                return DataRow(cells: [
+                  DataCell(Text(model.name.toString())),
+                  DataCell(
+                    _buildCircleAvatar(
+                      model.image == null
+                          ? "https://tse2.mm.bing.net/th?id=OIP.z-bE3VGJQux72dFc4n6BhQHaFU&pid=Api&P=0&h=220"
+                          : model.image is String
+                              ? model.imageString.toString()
+                              : model.image!.url.toString(),
+                    ),
+                  ),
+                  DataCell(Text(model.weight.toString())),
+                  DataCell(Text(model.pt.toString())),
+                  DataCell(Text(model.pd.toString())),
+                  DataCell(Text(model.rh.toString())),
+                  DataCell(Text(model.brand.toString())),
+                  DataCell(Text(model.product.toString())),
+                  DataCell(Text(model.manufacturer.toString())),
+                  DataCell(buildAction(context: context, model: model)),
+                ]);
+              }).toList()),
+        ),
       ),
     );
   }
