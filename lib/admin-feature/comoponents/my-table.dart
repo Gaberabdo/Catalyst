@@ -10,13 +10,21 @@ class MyTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Card(
-        color: Colors.grey.shade50,
+      scrollDirection: Axis.vertical,
+      child: Material(
+        color: Colors.white,
+        elevation: 12,
+        borderRadius: BorderRadiusDirectional.circular(20.0),
         child: DataTable(
             headingRowHeight: 50,
-            dataRowHeight: 101,
-            dividerThickness: 0,
+            border: TableBorder.all(
+              style: BorderStyle.solid,
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+              width: 2
+            ),
+            dataRowHeight: 80,
+            dividerThickness: 0.0,
             columns: const [
               DataColumn(
                 label: Text(

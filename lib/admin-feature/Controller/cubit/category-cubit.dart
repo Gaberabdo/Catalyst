@@ -280,32 +280,23 @@ class CategoryCubit extends Cubit<CategoryState> {
     }
   }
 
-  void performSearch({
-    required String searchTerm,
-    required String state,
-  }) {
+  Future<void> searchCatlog({
+    required String name,
+  }) async {
     emit(SearchLoadingState());
 
     try {
-      if (state == "refused") {
-        List<Catalogs> results = refusedList!.catalogs
-            .where((item) =>
-                item.name.toString().contains(searchTerm.toString()))
-            .toList();
-        emit(SearchSuccessState(results));
-      } else if (state == "pending") {
-        List<Catalogs> results = pendingList!.catalogs
-            .where(
-                (item) => item.name.toString().contains(searchTerm.toString()))
-            .toList();
-        emit(SearchSuccessState(results));
-      } else {
-        List<Catalogs> results = approvedList!.catalogs
-            .where(
-                (item) => item.name.toString().contains(searchTerm.toString()))
-            .toList();
-        emit(SearchSuccessState(results));
-      }
+      Response result = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalog/search?searchTerm=$name",
+        options: Options(
+          headers: {
+            'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        )
+      );
+      emit(SearchSuccessState(List<Catalogs>.from((result.data["catalogs"] as List).map((e) => Catalogs.fromJson(e)))));
     } catch (e) {
       emit(SearchErrorState("An error occurred while searching."));
     }
