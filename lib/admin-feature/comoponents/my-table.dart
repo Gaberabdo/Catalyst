@@ -6,7 +6,7 @@ import '../screens/list-user-catalog-screen.dart';
 
 class MyTable extends StatelessWidget {
   MyTable({required this.model});
-  List<CatalogModel> model;
+  List<Catalogs> model;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -16,17 +16,6 @@ class MyTable extends StatelessWidget {
         child: DataTable(
             headingRowHeight: 50,
             dataRowHeight: 101,
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(20),
-            //   boxShadow: [
-            //     BoxShadow(
-            //       offset: const Offset(5, 0),
-            //       blurRadius: 20,
-            //       spreadRadius: 3,
-            //       color: Colors.grey.shade100,
-            //     ),
-            //   ],
-            // ),
             dividerThickness: 0,
             columns: const [
               DataColumn(
@@ -36,58 +25,82 @@ class MyTable extends StatelessWidget {
                 ),
               ),
               DataColumn(
-                label: Text('Image',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Image',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Weight',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Weight',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Platinum',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Platinum',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Palladium',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Palladium',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Rhodium',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Rhodium',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Brand',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Brand',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('Product',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'Product',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
-                label: Text('CatMenu',
-                  textAlign: TextAlign.center,),
+                label: Text(
+                  'CatMenu',
+                  textAlign: TextAlign.center,
+                ),
               ),
               DataColumn(
                 label: Padding(
-                  padding: EdgeInsetsDirectional.only(
-                    start: 50
+                  padding: EdgeInsetsDirectional.only(start: 50),
+                  child: Text(
+                    'Action',
+                    textAlign: TextAlign.center,
                   ),
-                  child: Text('Action',
-                    textAlign: TextAlign.center,),
                 ),
               ),
             ],
             rows: model.map((model) {
               return DataRow(cells: [
                 DataCell(Text(model.name.toString())),
-                DataCell(_buildCircleAvatar(model.image.toString())),
+                DataCell(
+                  _buildCircleAvatar(
+                    model.image == null
+                        ? "https://tse2.mm.bing.net/th?id=OIP.z-bE3VGJQux72dFc4n6BhQHaFU&pid=Api&P=0&h=220"
+                        : model.image is String
+                            ? model.imageString.toString()
+                            : model.image!.url.toString(),
+                  ),
+                ),
                 DataCell(Text(model.weight.toString())),
                 DataCell(Text(model.pt.toString())),
                 DataCell(Text(model.pd.toString())),
                 DataCell(Text(model.rh.toString())),
                 DataCell(Text(model.brand.toString())),
                 DataCell(Text(model.product.toString())),
-                DataCell(Text(model.name.toString())),
+                DataCell(Text(model.manufacturer.toString())),
                 DataCell(buildAction(context: context, model: model)),
               ]);
             }).toList()),

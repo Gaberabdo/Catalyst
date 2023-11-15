@@ -43,10 +43,10 @@ class AppFunction {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(
-                  AssetsManager.waringImage,
-                  height: 60,
-                  width: 60,
+                Icon(
+                  Icons.warning,
+                  size: 30,
+                  color: Colors.red,
                 ),
                 const SizedBox(
                   height: 16.0,

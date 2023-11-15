@@ -16,56 +16,79 @@ class ListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: buildTabBarItem(),
-          ),
-          elevation: 0,
-          title: Text(
-            'List Users Catlalog',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              color: Colors.black87,
+    return BlocProvider(
+      create: (context) => CategoryCubit()..getAdminCategory(),
+      child: BlocConsumer<CategoryCubit, CategoryState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          var cubit = CategoryCubit.get(context);
+          return DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(70),
+                  child: buildTabBarItem(),
+                ),
+                elevation: 0,
+                title: Text(
+                  'List Users Catlalog',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    color: Colors.black87,
+                  ),
+                ),
+                leading: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.menu_sharp,
+                        color: Colors.black87,
+                        size: 36,
+                      )),
+                ),
+                centerTitle: true,
+              ),
+              body: TabBarView(
+                children: [
+                  _buildTabContent(
+                    searchController,
+                    cubit,
+                    state,
+                  ),
+                  _buildTabContentPending(
+                    searchController,
+                    cubit,
+                    state,
+                  ),
+                  _buildTabContentRefused(
+                    searchController,
+                    cubit,
+                    state,
+                  ),
+                ],
+              ),
             ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.menu_sharp,
-                  color: Colors.black87,
-                  size: 36,
-                )),
-          ),
-          centerTitle: true,
-        ),
-        body: TabBarView(
-          children: [
-            _buildTabContent('approved', searchController, context),
-            _buildTabContentPending('pending', searchController),
-            _buildTabContentRefused('refuse', searchController),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
 
-Widget buildAction(
-    {required BuildContext context, required CatalogModel model}) {
+Widget buildAction({required BuildContext context, required Catalogs model}) {
   return Row(
     children: [
       Expanded(
         child: IconButton(
             onPressed: () async {
               print(model.id!);
-              await CategoryCubit.get(context).deleteCatalog(id: model.id!,state: model.status!);
+              await CategoryCubit.get(context)
+                  .deleteCatalog(id: model.id!, state: model.status!);
             },
             icon: Icon(
               Icons.delete_outline,
@@ -99,345 +122,227 @@ Widget buildAction(
 }
 
 Widget _buildTabContent(
-    String status, TextEditingController key, BuildContext context) {
-  return BlocProvider(
-    create: (context) => CategoryCubit()..getAdminCategory('approved'),
-    child: BlocConsumer<CategoryCubit, CategoryState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = CategoryCubit.get(context);
-        if (CategoryCubit.get(context).productsList.isNotEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  MyTextField(
-                    emailController: key,
-                    hintText: 'Search',
-                    prefixIcon:
-                        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 52,
-                        width: 164,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                            child: Text(
-                          '${cubit.productsList!.length}',
-                          style: GoogleFonts.poppins(fontSize: 12),
-                        )),
-                      ),
-                      Text(
-                        'Recordes Per Page',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          MyTable(model: cubit.productsList),
-                          const SizedBox(
-                            height: 12,
-                          )
-                        ],
-                      );
-                    },
-                    itemCount: cubit.productsList!.length,
-                    shrinkWrap: true,
-                  )
-
-                  // SizedBox(
-                  //   height: 400,
-                  //   child: ListView.builder(
-                  //     itemBuilder: (BuildContext context, int index) {
-
-                  //     },
-                  //     itemCount: 12,
-                  //     shrinkWrap: true,
-                  //   ),
-                  // )
-                ],
-              ),
+  TextEditingController key,
+  CategoryCubit cubit,
+  CategoryState state,
+) {
+  if (cubit.approvedList != null && state is HomeSucess) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            MyTextField(
+              emailController: key,
+              hintText: 'Search',
+              prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              validator: (p0) {
+                return "";
+              },
             ),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.yellow.shade600,
-              ),
+            const SizedBox(
+              height: 12,
             ),
-          );
-        }
-      },
-    ),
-  );
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 52,
+                  width: 164,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Center(
+                      child: Text(
+                    '${cubit.approvedList!.catalogs!.length}',
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  )),
+                ),
+                Text(
+                  'Recordes Per Page',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            if (cubit.approvedList != null)
+              MyTable(model: cubit.approvedList!.catalogs),
+          ],
+        ),
+      ),
+    );
+  } else {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: CircularProgressIndicator(
+          color: Colors.yellow.shade600,
+        ),
+      ),
+    );
+  }
 }
 
 Widget _buildTabContentPending(
-  String status,
   TextEditingController key,
+  CategoryCubit cubit,
+  CategoryState state,
 ) {
-  return BlocProvider(
-    create: (context) => CategoryCubit()..getAdminCategory('pending'),
-    child: BlocConsumer<CategoryCubit, CategoryState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = CategoryCubit.get(context);
-
-        if (CategoryCubit.get(context).productsList.isNotEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  MyTextField(
-                    emailController: key,
-                    hintText: 'Search',
-                    prefixIcon:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 52,
-                        width: 164,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                            child: Text(
-                              '${cubit.productsList!.length}',
-                              style: GoogleFonts.poppins(fontSize: 12),
-                            )),
-                      ),
-                      Text(
-                        'Recordes Per Page',
-                        style: GoogleFonts.poppins(
-                            fontSize: 17, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          MyTable(model: cubit.productsList!),
-                          const SizedBox(
-                            height: 12,
-                          )
-                        ],
-                      );
-                    },
-                    itemCount: cubit.productsList!.length,
-                    shrinkWrap: true,
-                  )
-
-                  // SizedBox(
-                  //   height: 400,
-                  //   child: ListView.builder(
-                  //     itemBuilder: (BuildContext context, int index) {
-
-                  //     },
-                  //     itemCount: 12,
-                  //     shrinkWrap: true,
-                  //   ),
-                  // )
-                ],
-              ),
+  if (cubit.pendingList != null && state is HomeSucess) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            MyTextField(
+              emailController: key,
+              hintText: 'Search',
+              prefixIcon:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              validator: (p0) {
+                return "";
+              },
             ),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.yellow.shade600,
-              ),
+            const SizedBox(
+              height: 12,
             ),
-          );
-        }
-
-      },
-    ),
-  );
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 52,
+                  width: 164,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Center(
+                      child: Text(
+                    '${cubit.pendingList!.catalogs.length}',
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  )),
+                ),
+                Text(
+                  'Recordes Per Page',
+                  style: GoogleFonts.poppins(
+                      fontSize: 17, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            if (cubit.pendingList != null)
+              MyTable(model: cubit.pendingList!.catalogs!),
+          ],
+        ),
+      ),
+    );
+  } else {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: CircularProgressIndicator(
+          color: Colors.yellow.shade600,
+        ),
+      ),
+    );
+  }
 }
 
 Widget _buildTabContentRefused(
-  String status,
   TextEditingController key,
+  CategoryCubit cubit,
+  CategoryState state,
 ) {
-  return BlocProvider(
-    create: (context) => CategoryCubit()..getAdminCategory('refused'),
-    child: BlocConsumer<CategoryCubit, CategoryState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = CategoryCubit.get(context);
-
-        if (CategoryCubit.get(context).productsList.isNotEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  MyTextField(
-                    emailController: key,
-                    hintText: 'Search',
-                    prefixIcon:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 52,
-                        width: 164,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                            child: Text(
-                              '${cubit.productsList!.length}',
-                              style: GoogleFonts.poppins(fontSize: 12),
-                            )),
-                      ),
-                      Text(
-                        'Recordes Per Page',
-                        style: GoogleFonts.poppins(
-                            fontSize: 17, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          MyTable(model: cubit.productsList!),
-                          const SizedBox(
-                            height: 12,
-                          )
-                        ],
-                      );
-                    },
-                    itemCount: cubit.productsList!.length,
-                    shrinkWrap: true,
-                  )
-
-                  // SizedBox(
-                  //   height: 400,
-                  //   child: ListView.builder(
-                  //     itemBuilder: (BuildContext context, int index) {
-
-                  //     },
-                  //     itemCount: 12,
-                  //     shrinkWrap: true,
-                  //   ),
-                  // )
-                ],
-              ),
+  if (cubit.refusedList != null && state is HomeSucess) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            MyTextField(
+              emailController: key,
+              validator: (p0) {
+                return "";
+              },
+              hintText: 'Search',
+              prefixIcon:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
             ),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.yellow.shade600,
-              ),
+            const SizedBox(
+              height: 12,
             ),
-          );
-        }
-      },
-    ),
-  );
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 52,
+                  width: 164,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Center(
+                      child: Text(
+                    '${cubit.refusedList!.catalogs.length}',
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  )),
+                ),
+                Text(
+                  'Recordes Per Page',
+                  style: GoogleFonts.poppins(
+                      fontSize: 17, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            MyTable(model: cubit.refusedList!.catalogs),
+          ],
+        ),
+      ),
+    );
+  } else {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: CircularProgressIndicator(
+          color: Colors.yellow.shade600,
+        ),
+      ),
+    );
+  }
 }
 
 Widget buildTabBarItem() {
-  return Padding(
-    padding: const EdgeInsets.all(6.0),
-    child: TabBar(
-      labelColor: Colors.yellow.shade700,
-      unselectedLabelColor: Colors.grey,
-      labelStyle: GoogleFonts.poppins(
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-      ),
-      unselectedLabelStyle: GoogleFonts.poppins(
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-      ),
-      indicatorColor: Colors.yellow.shade700,
-      // indicator: BoxDecoration(
-      //     borderRadius: BorderRadius.circular(24), // Creates border
-      //     color: Colors.yellow.shade600),
-      isScrollable: true,
-      tabs: [
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Text(
-            'Approved',
-            style:
-                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Text(
-            'Pending',
-            style:
-                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Text(
-            'Refused',
-            style:
-                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
+  return TabBar(
+    labelColor: Colors.yellow.shade700,
+    unselectedLabelColor: Colors.grey,
+    labelStyle: GoogleFonts.poppins(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
     ),
+    unselectedLabelStyle: GoogleFonts.poppins(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
+    ),
+    indicatorColor: Colors.yellow.shade700,
+    isScrollable: true,
+    tabs: const [
+      Text(
+        'Approved',
+      ),
+      Text(
+        'Pending',
+      ),
+      Text(
+        'Refused',
+      ),
+    ],
   );
 }
-// ListView.builder(
-//               itemBuilder: (BuildContext context, int index) {
-//                 return MyListCatlog(model: cubit.productsList![index]);
-//               },
-//               itemCount: cubit.productsList!.length,
-//               shrinkWrap: true,
-//             )

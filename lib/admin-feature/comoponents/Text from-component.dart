@@ -2,29 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyTextField extends StatelessWidget {
-  MyTextField(
-      {this.prefixIcon,
-      required this.hintText,
-      this.onTap,
-      this.onSubmited,
-      this.suffixIcon,
-      required this.emailController});
+  MyTextField({
+    this.prefixIcon,
+    required this.hintText,
+    this.onTap,
+    this.onSubmited,
+    required this.validator,
+    this.onChanged,
+    this.suffixIcon,
+    this.height,
+    required this.emailController,
+  });
   TextEditingController? emailController;
 
   Widget? prefixIcon;
   String? hintText;
-  String? validator;
-  bool? obscureText;
   Function? onTap;
+  Widget? suffixIcon;
+  double? height;
+  Function(String)? onSubmited;
+  String Function(String?) validator;
+  Function(String)? onChanged;
+
+  bool? obscureText;
+
   bool? enabled = true;
 
   bool? icon;
-  Widget? suffixIcon;
-  Function(String)? onSubmited;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
+      height: height ?? 48,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.circular(10),
@@ -37,9 +46,10 @@ class MyTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
-          onSubmitted: onSubmited,
+      child: TextFormField(
           controller: emailController,
+          onChanged: onChanged,
+          validator: validator,
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.grey.shade100, // Set background color

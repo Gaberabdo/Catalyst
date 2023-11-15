@@ -15,14 +15,16 @@ class CategoryCubit extends Cubit<CategoryState> {
   CategoryCubit() : super(HomeInial());
 
   static CategoryCubit get(context) => BlocProvider.of(context);
-  List<CatalogModel> productsList =[];
+  CatalogModel? approvedList;
+  CatalogModel? refusedList;
+  CatalogModel? pendingList;
 
   ///get item
-  Future<List<CatalogModel>> getAdminCategory(String status) async {
+  Future<void> getAdminCategory() async {
     emit(HomeLoading());
     try {
-      Response response = await DioHelper.getData(
-        url: "${ApiConst.baseUrl}admin/catalog/list?status=${status}",
+      Response approved = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalog/list?status=approved",
         options: Options(
           headers: {
             'Authorization':
@@ -30,29 +32,36 @@ class CategoryCubit extends Cubit<CategoryState> {
             'x-app-token': 'Catalyst-Team'
           },
         ),
-      ); // Replace with your API endpoint
-
-      print("+++++++++++++response++++++++++++++");
-      print(response.data["catalogs"]);
-
-      List<dynamic> brandsJson = response.data['catalogs'];
-
-      productsList =
-          await brandsJson.map((json) => CatalogModel.fromJson(json)).toList();
-
-      print("+++++++++++++productsList++++++++++++++");
-      print('dattttttttttttttttttttttttttttttttttttttttttttttttttttttt');
-      print(productsList![0].name);
-      print(productsList!.length);
-      print('lenttttttttttttttttttttttttttttttttt');
+      );
+      approvedList = CatalogModel.fromJson(approved.data);
+      Response refused = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalog/list?status=refused",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      refusedList = CatalogModel.fromJson(refused.data);
+      Response pending = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalog/list?status=pending",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      pendingList = CatalogModel.fromJson(pending.data);
       emit(HomeSucess());
-      return productsList!;
     } on Exception catch (e) {
       if (e is DioError) {
         emit(HomeErorr());
         print('error');
       }
-      return [];
     }
   }
 
@@ -63,7 +72,11 @@ class CategoryCubit extends Cubit<CategoryState> {
     String? name,
     int? weight,
     String? details,
+    String? brand,
+    String? product,
+    String? note,
     String? manufacturer,
+    String? status,
     int? rh,
     int? pt,
     int? pd,
@@ -71,13 +84,17 @@ class CategoryCubit extends Cubit<CategoryState> {
   }) async {
     emit(UpdateLoading());
     try {
-      Response response = await DioHelper.putData(
+      DioHelper.putData(
         url: "${ApiConst.baseUrl}admin/catalog/update?_id=$id",
         data: {
           "userId": userId,
           "name": name,
           "weight": weight,
           "details": details,
+          "brand": brand,
+          "product": product,
+          "note": note,
+          "status": status,
           "manufacturer": manufacturer,
           "rh": rh,
           "pt": pt,
@@ -91,27 +108,7 @@ class CategoryCubit extends Cubit<CategoryState> {
           },
         ),
       );
-
-      print("+++++++++++++Response Status Code++++++++++++++");
-      print(response.statusCode);
-
-      if (response.statusCode == 200) {
-        print("+++++++++++++Response Message++++++++++++++");
-        print(response.data["message"]);
-
-        List<dynamic> catalogsJson = response.data['message'];
-
-        List<CatalogModel> catalogs =
-            catalogsJson.map((json) => CatalogModel.fromJson(json)).toList();
-
-        print("+++++++++++++Catalogs++++++++++++++");
-        print(catalogs);
-        emit(UpdateSucess());
-        return catalogs;
-      } else {
-        print('errorrrrrrrrrrrrrr');
-        emit(UpdataErorr());
-      }
+      emit(UpdateSucess());
     } on DioError catch (e) {
       if (e.response != null) {
         await AppFunction.showErrorORWarningDialog(
@@ -179,7 +176,7 @@ class CategoryCubit extends Cubit<CategoryState> {
   }) async {
     emit(RequestAdminStateLoading());
     try {
-     await DioHelper.postData(
+      await DioHelper.postData(
         url: "${ApiConst.baseUrl}admin/catalog/approve?_id=$id",
         options: Options(
           headers: {
@@ -199,15 +196,17 @@ class CategoryCubit extends Cubit<CategoryState> {
 
   Future<void> refuseRequest({
     required String id,
+    required String note,
   }) async {
     emit(RequestAdminStateLoading());
     try {
       DioHelper.postData(
         url: "${ApiConst.baseUrl}admin/catalog/refuse?_id=$id",
+        data: {"note": note},
         options: Options(
           headers: {
             'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
             'x-app-token': 'Catalyst-Team'
           },
         ),
@@ -220,7 +219,6 @@ class CategoryCubit extends Cubit<CategoryState> {
     }
   }
 
-
   Future<void> deleteCatalog({
     required String id,
     required String state,
@@ -232,13 +230,20 @@ class CategoryCubit extends Cubit<CategoryState> {
         options: Options(
           headers: {
             'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
             'x-app-token': 'Catalyst-Team'
           },
         ),
       );
-      productsList.clear();
-      getAdminCategory(state);
+      if (state == "refused") {
+        refusedList!.catalogs.clear();
+      } else if (state == "pending") {
+        pendingList!.catalogs.clear();
+      } else {
+        approvedList!.catalogs.clear();
+      }
+
+      getAdminCategory();
       emit(DeleteCatalogSuccess());
     } on DioException catch (error) {
       print(error.message);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class MyListCatlog extends StatelessWidget {
   MyListCatlog({required this.model});
-  CatalogModel model;
+  Catalogs model;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +16,7 @@ class MyListCatlog extends StatelessWidget {
 }
 
 class MyListView extends StatelessWidget {
-  CatalogModel model;
+  Catalogs model;
   MyListView({required this.model});
 
   @override

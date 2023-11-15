@@ -3,7 +3,7 @@ class Brand {
   String admin;
   String name;
   String details;
-  BrandImage image;
+  BrandImage? image;
 
   Brand({
     required this.id,
@@ -19,7 +19,7 @@ class Brand {
       admin: json['admin'],
       name: json['name'],
       details: json['details'],
-      image: BrandImage.fromJson(json['image']),
+      image: json['image'] == null ? null : BrandImage.fromJson(json['image']),
     );
   }
 }
@@ -54,7 +54,8 @@ class BrandResponse {
 
   factory BrandResponse.fromJson(Map<String, dynamic> json) {
     List<dynamic> brandsJson = json['brands'];
-    List<Brand> brands = brandsJson.map((brandJson) => Brand.fromJson(brandJson)).toList();
+    List<Brand> brands =
+        brandsJson.map((brandJson) => Brand.fromJson(brandJson)).toList();
 
     return BrandResponse(
       success: json['success'],
