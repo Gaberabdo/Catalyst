@@ -8,6 +8,7 @@ import '../../../Core/utiles/api_const.dart';
 import '../../../Core/utiles/api_service.dart';
 import '../../../Core/utiles/app_functions.dart';
 import '../Models/catalog_model.dart';
+import '../Models/catalytic_model.dart';
 import '../Models/product_model.dart';
 import 'category-state.dart';
 
@@ -72,6 +73,7 @@ class CategoryCubit extends Cubit<CategoryState> {
     String? name,
     int? weight,
     String? details,
+    String? isHyprid,
     String? brand,
     String? product,
     String? note,
@@ -89,6 +91,7 @@ class CategoryCubit extends Cubit<CategoryState> {
         data: {
           "userId": userId,
           "name": name,
+          "isHyprid": isHyprid,
           "weight": weight,
           "details": details,
           "brand": brand,
@@ -143,6 +146,31 @@ class CategoryCubit extends Cubit<CategoryState> {
     } on DioException catch (error) {
       emit(GetBrandError());
       return List<Brand>.empty();
+    }
+  }
+
+  Future<List<CatalyticsModel>> getCTList() async {
+    emit(GetBrandLoading());
+    try {
+      Response response = await DioHelper.getData(
+        url: "${ApiConst.baseUrl}admin/catalytic/list",
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'x-app-token': 'Catalyst-Team'
+          },
+        ),
+      );
+      print(response.data["catalytics"]);
+      emit(GetClListSuccess(List<CatalyticsModel>.from(
+          (response.data["catalytics"] as List)
+              .map((e) => CatalyticsModel.fromJson(e)))));
+      return List<CatalyticsModel>.from((response.data["catalytics"] as List)
+          .map((e) => CatalyticsModel.fromJson(e)));
+    } on DioException catch (error) {
+      emit(GetBrandError());
+      return List<CatalyticsModel>.empty();
     }
   }
 
@@ -249,6 +277,37 @@ class CategoryCubit extends Cubit<CategoryState> {
       print(error.message);
       print(error.error);
       emit(DeleteCatalogError());
+    }
+  }
+
+  void performSearch({
+    required String searchTerm,
+    required String state,
+  }) {
+    emit(SearchLoadingState());
+
+    try {
+      if (state == "refused") {
+        List<Catalogs> results = refusedList!.catalogs
+            .where((item) =>
+                item.name.toString().contains(searchTerm.toString()))
+            .toList();
+        emit(SearchSuccessState(results));
+      } else if (state == "pending") {
+        List<Catalogs> results = pendingList!.catalogs
+            .where(
+                (item) => item.name.toString().contains(searchTerm.toString()))
+            .toList();
+        emit(SearchSuccessState(results));
+      } else {
+        List<Catalogs> results = approvedList!.catalogs
+            .where(
+                (item) => item.name.toString().contains(searchTerm.toString()))
+            .toList();
+        emit(SearchSuccessState(results));
+      }
+    } catch (e) {
+      emit(SearchErrorState("An error occurred while searching."));
     }
   }
 }

@@ -133,9 +133,16 @@ Widget _buildTabContent(
         child: Column(
           children: [
             MyTextField(
+              onChanged: (p0) {
+                // cubit.performSearch(
+                //   searchTerm: '%${p0}%',
+                //   state: "approved"
+                // );
+              },
               emailController: key,
               hintText: 'Search',
-              prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              prefixIcon:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
               validator: (p0) {
                 return "";
               },

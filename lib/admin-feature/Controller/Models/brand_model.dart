@@ -2,14 +2,12 @@ class Brand {
   String id;
   String admin;
   String name;
-  String details;
   BrandImage? image;
 
   Brand({
     required this.id,
     required this.admin,
     required this.name,
-    required this.details,
     required this.image,
   });
 
@@ -18,7 +16,6 @@ class Brand {
       id: json['_id'],
       admin: json['admin'],
       name: json['name'],
-      details: json['details'],
       image: json['image'] == null ? null : BrandImage.fromJson(json['image']),
     );
   }

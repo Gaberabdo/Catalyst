@@ -10,6 +10,7 @@ import '../../Core/utiles/colors.dart';
 import '../../Core/utiles/stayles.dart';
 import '../Controller/Models/brand_model.dart';
 import '../Controller/Models/catalog_model.dart';
+import '../Controller/Models/catalytic_model.dart';
 import '../Controller/cubit/category-cubit.dart';
 import '../Controller/cubit/category-state.dart';
 import '../comoponents/Text from-component.dart';
@@ -31,7 +32,9 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
   @override
   void initState() {
     dropdownValueBreed = widget.model.brand.toString();
+    dropdownValueBreed = widget.model.brand.toString();
     dropdownValueProduct = widget.model.product.toString();
+    selectedValue = widget.model.isHyprid.toString();
     dropdownValueState = widget.model.status.toString();
     nameController.text = widget.model.name;
     detailsController.text = widget.model.details;
@@ -39,12 +42,11 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
     weightController.text = widget.model.weight.toString();
     platinumController.text = widget.model.pt.toString();
     rhodiumController.text = widget.model.rh.toString();
-    manufacturerController.text = widget.model.manufacturer;
+    manufacturerController.text = widget.model.manufacturer.toString();
     super.initState();
   }
 
-  String selectedValue = 'Option 1';
-
+  String? selectedValue;
 
   var nameController = TextEditingController();
 
@@ -64,29 +66,41 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<Brand> brand = [];
+  List<CatalyticsModel> cataList = [];
   List<ProductModel> products = [];
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CategoryCubit()
         ..getBrand()
-        ..getProduct(),
+        ..getProduct()
+        ..getCTList(),
       child: BlocConsumer<CategoryCubit, CategoryState>(
         listener: (context, state) {
           if (state is GetBrandSuccess) {
             brand.addAll(state.brand);
+          }
+          if (state is GetClListSuccess) {
+            cataList.addAll(state.brand);
           }
 
           if (state is GetProductSuccess) {
             products.addAll(state.brand);
           }
           if (state is UpdateSucess) {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-              builder: (context) {
-                return ListScreen();
-              },
-            ), (route) => false);
+            CategoryCubit.get(context).getAdminCategory().then((value) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ListScreen();
+                  },
+                ),
+                (route) => false,
+              );
+            });
           }
+
           if (state is RequestAdminStateLSuccess) {
             CategoryCubit.get(context).getAdminCategory();
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -254,6 +268,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                         ),
                       ),
                       buildDropDownBreed(brand),
+
                       const SizedBox(
                         height: 12,
                       ),
@@ -272,18 +287,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                         style: GoogleFonts.poppins(
                             fontSize: 14, fontWeight: FontWeight.w500),
                       ),
-                      MyTextField(
-                        emailController: manufacturerController,
-                        onChanged: (p0) {
-                          setState(() {
-                            manufacturerController.text = p0;
-                          });
-                        },
-                        hintText: 'Catalytic Manufacturer',
-                        validator: (p0) {
-                          return "";
-                        },
-                      ),
+                      buildDropDownCata(cataList),
                       const SizedBox(
                         height: 12,
                       ),
@@ -405,7 +409,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                       ),
                       if (dropdownValueBreed != widget.model.brand.toString() ||
                           dropdownValueState != widget.model.status ||
-
+                          selectedValue != widget.model.isHyprid ||
                           dropdownValueProduct !=
                               widget.model.product.toString() ||
                           nameController.text != widget.model.name ||
@@ -433,6 +437,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                           dropdownValueProduct !=
                               widget.model.product.toString() ||
                           dropdownValueState != widget.model.status ||
+                          selectedValue != widget.model.isHyprid ||
                           nameController.text != widget.model.name ||
                           detailsController.text != widget.model.details ||
                           palladiumController.text !=
@@ -461,6 +466,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                               dropdownValueProduct !=
                                   widget.model.product.toString() ||
                               nameController.text != widget.model.name ||
+                              selectedValue != widget.model.isHyprid ||
                               dropdownValueState != widget.model.status ||
                               detailsController.text != widget.model.details ||
                               palladiumController.text !=
@@ -477,9 +483,10 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
                               width: double.infinity,
                               height: 48,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  cubit.updateItem(
+                                onPressed: () async {
+                                  await cubit.updateItem(
                                     id: widget.model.id,
+                                    isHyprid: selectedValue,
                                     context: context,
                                     status: dropdownValueState,
                                     manufacturer: manufacturerController.text,
@@ -701,7 +708,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
   Widget buildDropDownBreed(List<Brand> breedData) {
     return Container(
       width: MediaQuery.of(context).size.width * .99,
-      height: 40,
+      height: 52,
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.circular(10),
         boxShadow: [
@@ -717,6 +724,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
         padding: const EdgeInsets.all(8.0),
         child: DropdownButton<Brand>(
           underline: const SizedBox(),
+          isExpanded: true,
           iconSize: 18,
           menuMaxHeight: 300,
           iconEnabledColor: Colors.black,
@@ -750,10 +758,63 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
     );
   }
 
+  Widget buildDropDownCata(List<CatalyticsModel> breedData) {
+    return Container(
+      width: MediaQuery.of(context).size.width * .99,
+      height: 52,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadiusDirectional.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1), // Set shadow color
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: const Offset(0, 1), // Set shadow offset
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownButton<CatalyticsModel>(
+          underline: const SizedBox(),
+          iconSize: 18,
+          isExpanded: true,
+          menuMaxHeight: 300,
+          iconEnabledColor: Colors.black,
+          borderRadius: BorderRadius.circular(8),
+          hint: SizedBox(
+            width: MediaQuery.of(context).size.width / 2.6,
+            child: Text(
+              manufacturerController.text,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          onChanged: (newValue) {
+            setState(() {
+              manufacturerController.text = newValue!.name;
+              print('${newValue.id}555555555555555555555555555');
+            });
+          },
+          items: breedData.map((CatalyticsModel value) {
+            return DropdownMenuItem<CatalyticsModel>(
+              value: value,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 2.6,
+                child: Text(
+                  value.name,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
   Widget buildDropDownProduct(List<ProductModel> breedData) {
     return Container(
       width: MediaQuery.of(context).size.width * .99,
-      height: 40,
+      height: 52,
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.circular(10),
         boxShadow: [
@@ -770,6 +831,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
         child: DropdownButton<ProductModel>(
           underline: const SizedBox(),
           iconSize: 18,
+          isExpanded: true,
           menuMaxHeight: 300,
           iconEnabledColor: Colors.black,
           borderRadius: BorderRadius.circular(8),
@@ -805,7 +867,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
   Widget buildDropDownState(List<String> breedData) {
     return Container(
       width: MediaQuery.of(context).size.width * .99,
-      height: 40,
+      height: 52,
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.circular(10),
         boxShadow: [
@@ -823,6 +885,7 @@ class _ShowItemScreenState extends State<ShowItemScreen> {
           underline: const SizedBox(),
           iconSize: 18,
           menuMaxHeight: 300,
+          isExpanded: true,
           iconEnabledColor: Colors.black,
           borderRadius: BorderRadius.circular(8),
           hint: SizedBox(
