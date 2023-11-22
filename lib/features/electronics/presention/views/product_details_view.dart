@@ -1,4 +1,4 @@
-import 'package:chart_project/electronics/data/product_model.dart';
+import 'package:cat_price/features/electronics/data/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
