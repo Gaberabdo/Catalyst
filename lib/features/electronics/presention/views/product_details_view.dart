@@ -1,11 +1,8 @@
-
-
+import 'package:chart_project/electronics/data/product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart%20';
-import 'package:cat_price/features/electronics/presention/views/product_list_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../generated/l10n.dart';
-import '../../data/product_model.dart';
+import '../../../generated/l10n.dart';
 import '../manager/electronics/electronics_cubit.dart';
 
 class ProductDetailsView extends StatelessWidget {
@@ -32,7 +29,8 @@ class ProductDetailsView extends StatelessWidget {
               decoration: BoxDecoration(
                 image: product.image != null
                     ? DecorationImage(
-                        image: NetworkImage(product.image!), fit: BoxFit.cover)
+                        image: NetworkImage(product.image!.url),
+                        fit: BoxFit.cover)
                     : const DecorationImage(
                         image: AssetImage('assets/details_image.png'),
                         fit: BoxFit.cover),
@@ -41,13 +39,7 @@ class ProductDetailsView extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProductListView(
-                      title: title,
-                    ),
-                  ),
-                );
+                Navigator.of(context).pop();
               },
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -82,13 +74,13 @@ class ProductDetailsView extends StatelessWidget {
               RichText(
                 text: TextSpan(children: [
                   TextSpan(
-                      text: '${product.price} AED',
+                      text: S.of(context).price,
+                      style:
+                          const TextStyle(fontSize: 18, color: Colors.amber)),
+                  TextSpan(
+                      text: ': ${product.price} AED',
                       style:
                           const TextStyle(fontSize: 18, color: Colors.black)),
-                  TextSpan(
-                      text: ' /${S.of(context).piece}',
-                      style:
-                          const TextStyle(fontSize: 16, color: Colors.yellow)),
                 ]),
               ),
               const Divider(),
@@ -97,7 +89,8 @@ class ProductDetailsView extends StatelessWidget {
               ),
               Text(
                 S.of(context).Similar_Products,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               BlocBuilder<ElectronicsCubit, ElectronicsState>(
                 builder: (context, state) {
@@ -135,8 +128,8 @@ class ProductDetailsView extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       image: product.image != null
                                           ? DecorationImage(
-                                              image:
-                                                  NetworkImage(product.image!),
+                                              image: NetworkImage(
+                                                  product.image!.url),
                                               fit: BoxFit.cover)
                                           : const DecorationImage(
                                               image: AssetImage(
