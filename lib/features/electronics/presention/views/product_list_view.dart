@@ -22,6 +22,14 @@ class ProductListView extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ElectronicsView(),
+                ));
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
         ),
         body: BlocBuilder<ElectronicsCubit, ElectronicsState>(
           builder: (context, state) {
@@ -83,7 +91,8 @@ class ProductListView extends StatelessWidget {
                                     image: NetworkImage(
                                         ElectronicsCubit.get(context)
                                             .items[index]
-                                            .image!),
+                                            .image!
+                                            .url),
                                     fit: BoxFit.cover)
                                 : const DecorationImage(
                                     image:
