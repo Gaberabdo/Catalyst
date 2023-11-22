@@ -1,7 +1,7 @@
 class ProductData {
-  bool success;
-  int code;
-  List<Product> items;
+  final bool success;
+  final int code;
+  final List<Product> items;
 
   ProductData({
     required this.success,
@@ -13,47 +13,46 @@ class ProductData {
     return ProductData(
       success: json['success'],
       code: json['code'],
-      items: List<Product>.from(
-          json['Items'].map((item) => Product.fromJson(item))),
+      items: (json['Items'] as List)
+          .map((itemJson) => Product.fromJson(itemJson))
+          .toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'code': code,
-      'Items': items.map((item) => item.toJson()).toList(),
-    };
   }
 }
 
 class Product {
-  String name;
-  double price;
-  String? image;
-  // String manufacturer;
+  final String name;
+  final double price;
+  final Image? image;
+
   Product({
     required this.name,
     required this.price,
     this.image,
-    //required this.manufacturer,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       name: json['name'],
       price: double.parse(json['price'].toStringAsFixed(4)).toDouble(),
-      image: json['image'],
-      // manufacturer: json['manufacturer'],
+      image: json['image'] != null ? Image.fromJson(json['image']) : null,
     );
   }
+}
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'price': price,
-      'image': image,
-      // 'manufacturer': manufacturer,
-    };
+class Image {
+  final String url;
+  final String publicId;
+
+  Image({
+    required this.url,
+    required this.publicId,
+  });
+
+  factory Image.fromJson(Map<String, dynamic> json) {
+    return Image(
+      url: json['url'],
+      publicId: json['public_id'],
+    );
   }
 }
