@@ -28,9 +28,9 @@ class MetalData {
 
 class Metal {
   String id;
-  int pd;
-  int pt;
-  int rh;
+  dynamic pd;
+  dynamic pt;
+  dynamic rh;
   DateTime date;
   List<int> pdDaily;
   List<int> ptDaily;

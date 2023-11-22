@@ -1,6 +1,7 @@
 import 'dart:async';
 
 
+import 'package:cat_price/core/core-brand/utiles/api_const.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:meta/meta.dart';
 
 
 
+import '../../../../../core/SharedPreference.dart';
 import '../../../../../core/services/dio_helper.dart';
 import '../../../../../core/services/preferences.dart';
 import '../../../data/cache_daily_model.dart';
@@ -72,7 +74,7 @@ class ChartCubit extends Cubit<ChartState> {
     try {
       final response = await Diohelper.getData(
         url:
-            'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/get?userId=655918f10f9a784499a26041',
+            '${ApiConst.baseUrl}user/metal/get?userId=${Preference.getData(key: 'userId')}',
       );
 
       if (response.statusCode == 200) {

@@ -23,7 +23,7 @@ class InboxCubit extends Cubit<InboxStates> {
       print(id);
       print('iiiiiiiiiiiiiiiiiiiiiidddddddddddddddddddddddddddddddddddddd');
       Response response = await DioHelper.getData(
-        url: "${ApiConst.baseUrl}user/inbox/get?_id=${Preference.getData(key: "userId")}",
+        url: "${ApiConst.baseUrl}user/inbox/get?_id=${Preference.getData(key: 'userId')}",
         options: Options(
           headers: {
             'Authorization': 'Bearer ${Preference.getData(key: "token")}',
