@@ -1,54 +1,34 @@
-class MetalsModel{
-  bool? success;
-  int? code;
-  Metal? metal;
-
-  MetalsModel({this.success, this.code, this.metal});
-
-  MetalsModel.fromJson(Map<String, dynamic> json) {
-    success = json["success"];
-    code = json["code"];
-    metal = json["metal"] == null ? null : Metal.fromJson(json["metal"]);
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["success"] = success;
-    data["code"] = code;
-    if(metal != null) {
-      data["metal"] = metal?.toJson();
-    }
-    return data;
-  }
-}
-
-class Metal {
+class MetalItem {
   String? id;
   int? pd;
   int? pt;
   int? rh;
-  String? date;
-  int? v;
+  List<int> pdDaily;
+  List<int> ptDaily;
+  List<int> rhDaily;
 
-  Metal({this.id, this.pd, this.pt, this.rh, this.date, this.v});
 
-  Metal.fromJson(Map<String, dynamic> json) {
-    id = json["_id"];
-    pd = json["pd"];
-    pt = json["pt"];
-    rh = json["rh"];
-    date = json["date"];
-    v = json["__v"];
-  }
+  MetalItem({
+    this.id,
+    this.pd,
+    this.pt,
+    this.rh,
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = id;
-    data["pd"] = pd;
-    data["pt"] = pt;
-    data["rh"] = rh;
-    data["date"] = date;
-    data["__v"] = v;
-    return data;
+    required this.pdDaily,
+    required this.ptDaily,
+    required this.rhDaily,
+  });
+
+  factory MetalItem.fromJson(Map<String, dynamic> json) {
+    return MetalItem(
+      id: json['_id'],
+      pd: json['pd'],
+      pt: json['pt'],
+      rh: json['rh'],
+      pdDaily: List<int>.from(json['pdDaily']),
+      ptDaily: List<int>.from(json['ptDaily']),
+      rhDaily: List<int>.from(json['rhDaily']),
+
+    );
   }
 }

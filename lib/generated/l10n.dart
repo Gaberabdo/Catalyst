@@ -952,10 +952,10 @@ class S {
     );
   }
 
-  /// `Price:`
+  /// `price`
   String get price {
     return Intl.message(
-      'Price:',
+      'price',
       name: 'price',
       desc: '',
       args: [],
@@ -1213,16 +1213,6 @@ class S {
     return Intl.message(
       'Motherboard',
       name: 'Motherboard',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `piece`
-  String get piece {
-    return Intl.message(
-      'piece',
-      name: 'piece',
       desc: '',
       args: [],
     );

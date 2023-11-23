@@ -146,9 +146,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paladium": MessageLookupByLibrary.simpleMessage("Palladium/ppm"),
         "pickAnotherImage":
             MessageLookupByLibrary.simpleMessage("Pick another image"),
-        "piece": MessageLookupByLibrary.simpleMessage("piece"),
         "platinum": MessageLookupByLibrary.simpleMessage("Platinum/ppm"),
-        "price": MessageLookupByLibrary.simpleMessage("Price:"),
+        "price": MessageLookupByLibrary.simpleMessage("price"),
         "priceList": MessageLookupByLibrary.simpleMessage("price list"),
         "product": MessageLookupByLibrary.simpleMessage("Product"),
         "refused": MessageLookupByLibrary.simpleMessage("Refused"),

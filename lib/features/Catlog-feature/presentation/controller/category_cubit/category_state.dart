@@ -1,6 +1,5 @@
 part of 'category_cubit.dart';
 
-@immutable
 abstract class CategoryState {}
 
 class CategoryInitialState extends CategoryState {}
@@ -60,3 +59,4 @@ class SuccessSearchMyItemsCategoryState extends CategoryState {
 
   SuccessSearchMyItemsCategoryState(this.value);
 }
+

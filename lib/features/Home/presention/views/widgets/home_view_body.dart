@@ -27,7 +27,8 @@ class HomeViewBody extends StatefulWidget {
 class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MetalsCubit, MetalsState>(
+    return BlocConsumer<MetalsCubit, MetalsState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return SingleChildScrollView(
           child: Column(
@@ -64,39 +65,35 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    SearchBar(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchView()));
-                      },
-                      leading: const Icon(FontAwesomeIcons.magnifyingGlass,
-                          color: Color(0xff9094A0)),
-                      hintText: S.of(context).Search,
-                      hintStyle: const MaterialStatePropertyAll(TextStyle(
-                        color: Color(0xFF9094A0),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      )),
-                      trailing: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.mic,
-                            color: Color(0Xff9094A0),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.image_outlined,
-                            color: Color(0Xff9094A0),
-                          ),
-                        )
-                      ],
-                      padding: const MaterialStatePropertyAll(
-                          EdgeInsets.symmetric(horizontal: 20)),
+                    SizedBox(
+                      width: double.infinity,
+                      child: SearchBar(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchView()));
+                        },
+                        leading: const Icon(FontAwesomeIcons.magnifyingGlass,
+                            color: Color(0xff9094A0)),
+                        hintText: S.of(context).Search,
+                        hintStyle: const MaterialStatePropertyAll(TextStyle(
+                          color: Color(0xFF9094A0),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        trailing: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.image_outlined,
+                              color: Color(0Xff9094A0),
+                            ),
+                          )
+                        ],
+                        padding: const MaterialStatePropertyAll(
+                            EdgeInsets.symmetric(horizontal: 20)),
+                      ),
                     ),
                   ],
                 ),

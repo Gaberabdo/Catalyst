@@ -10,7 +10,7 @@ class CalculaterView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           S.of(context).Calculator,
           textAlign: TextAlign.center,
         ),

@@ -1,8 +1,7 @@
-
+import 'package:cat_price/features/Home/presention/views/home_view.dart';
 import 'package:cat_price/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 import '../../../../core/core-brand/utiles/app_functions.dart';
 import '../../../../core/core-brand/utiles/app_variables.dart';
@@ -42,6 +41,20 @@ class HomeCategory extends StatelessWidget {
                 title: Text(
                   S.of(context).title,
                   style: AppStyles.textStyle18,
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return HomeView();
+                        },
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  icon: Icon(Icons.arrow_back_ios),
                 ),
                 centerTitle: true,
                 actions: [

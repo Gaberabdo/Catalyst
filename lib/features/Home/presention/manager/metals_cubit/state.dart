@@ -1,3 +1,4 @@
+import '../../../data/models/metals_model.dart';
 import '../../../data/models/search_item_model.dart';
 import '../../../data/models/slider_item.dart';
 
@@ -7,7 +8,11 @@ class intialState extends MetalsState {}
 
 class loadingState extends MetalsState {}
 
-class successState extends MetalsState {}
+class successState extends MetalsState {
+  final MetalItem item ;
+
+  successState(this.item);
+}
 
 class errorState extends MetalsState {
   final String errMessage;

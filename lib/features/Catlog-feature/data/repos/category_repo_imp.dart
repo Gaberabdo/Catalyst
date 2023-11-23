@@ -20,8 +20,7 @@ class CategoryRepoImpl implements CategoryRepo {
         url: "${ApiConst.baseUrl}admin/brand/list",
         options: Options(
           headers: {
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
           },
         ),
       ); // Replace with your API endpoint
@@ -38,6 +37,9 @@ class CategoryRepoImpl implements CategoryRepo {
       return right(brandsList);
     } on Exception catch (e) {
       if (e is DioError) {
+        print(e.message);
+        print("+++++++++++++brandsList++++++++++++++");
+
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));

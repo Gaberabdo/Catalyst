@@ -52,8 +52,8 @@ class MovingText extends StatelessWidget {
               );
             }).toList(),
             options: CarouselOptions(
-              autoPlayAnimationDuration: const Duration(milliseconds: 200),
-              autoPlayCurve: Curves.fastOutSlowIn,
+              autoPlayAnimationDuration: const Duration(seconds: 1),
+              autoPlayCurve: Curves.linear,
               height:52,
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 4),

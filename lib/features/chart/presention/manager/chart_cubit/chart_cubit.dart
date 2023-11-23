@@ -1,14 +1,11 @@
 import 'dart:async';
 
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-
-
 
 import '../../../../../core/services/dio_helper.dart';
 import '../../../../../core/services/preferences.dart';
@@ -57,8 +54,7 @@ class ChartCubit extends Cubit<ChartState> {
 
   void startFetchingData() async {
     // Fetch data initially and every 6 hours
-    await fetchDataCheckerDaily();
-    await weekDataChecker();
+
     changeChartData(0);
 
     // _timer = Timer.periodic(Duration(minutes: 600), (timer) {
@@ -116,9 +112,10 @@ class ChartCubit extends Cubit<ChartState> {
     emit(ChartInitialM());
     try {
       final response = await Diohelper.getData(
-          url:
-              'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries',
-          x_app_token: 'Catalyst-Team');
+        url:
+            'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries',
+        x_app_token: 'Catalyst-Team',
+      );
 
       // final response = await dio.get(
       //     'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries');

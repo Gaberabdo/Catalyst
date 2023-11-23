@@ -17,6 +17,7 @@ import 'features/cat-price-feature/controller/cubit/price_list_cubit/price_cubit
 import 'features/electronics/presention/manager/electronics/electronics_cubit.dart';
 import 'features/settings/controller/setting_cubit.dart';
 import 'features/settings/controller/setting_state.dart';
+import 'features/splash-screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,7 +95,7 @@ class MyApp extends StatelessWidget {
               ],
               supportedLocales: S.delegate.supportedLocales,
               debugShowCheckedModeBanner: false,
-              home: widget,
+              home: SplashScreen(widget: widget),
             );
           },
         ),

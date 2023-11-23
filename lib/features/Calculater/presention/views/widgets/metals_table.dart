@@ -14,9 +14,9 @@ class MetalsTable extends StatelessWidget {
     late dynamic c1t2;
     late dynamic c1t3;
     late dynamic c1t4;
-    c1t1 = BlocProvider.of<MetalsCubit>(context).model?.metal?.pt ?? 0;
-    c1t2 = BlocProvider.of<MetalsCubit>(context).model?.metal?.pd ?? 0;
-    c1t3 = BlocProvider.of<MetalsCubit>(context).model?.metal?.rh ?? 0;
+    c1t1 = BlocProvider.of<MetalsCubit>(context).model?.pt ?? 0;
+    c1t2 = BlocProvider.of<MetalsCubit>(context).model?.pd ?? 0;
+    c1t3 = BlocProvider.of<MetalsCubit>(context).model?.rh ?? 0;
     c1t4 = 0;
     return Container(
       decoration: BoxDecoration(
@@ -86,20 +86,19 @@ class MetalsTable extends StatelessWidget {
                 text1: "pt",
                 text2: "pd",
                 text3: "rh",
-                text4: "",
               ),
               const Spacer(),
               MetalsColumn(
                   text1: c1t1.toStringAsFixed(2),
                   text2: c1t2.toStringAsFixed(2),
                   text3: c1t3.toStringAsFixed(2),
-                  text4: ""),
+                ),
               const Spacer(),
               MetalsColumn(
                   text1: (c1t1 / 31.105).toStringAsFixed(2),
                   text2: (c1t2 / 31.9).toStringAsFixed(2),
                   text3: (c1t3 / 35.8).toStringAsFixed(2),
-                  text4: ""),
+                 ),
               const Spacer(),
             ],
           ),

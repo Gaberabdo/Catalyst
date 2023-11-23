@@ -20,30 +20,31 @@ class MetalsCubit extends Cubit<MetalsState> {
   MetalsCubit() : super(intialState());
 
   static MetalsCubit get(context) => BlocProvider.of(context);
-  MetalsModel? model;
+  MetalItem? model;
   SharedPreferences? preferences;
   Dio dio = Dio();
 
   Future<void> GetMetals() async {
     emit(loadingState());
-    ApiService(dio)
-        .get(
-      endPoint:
-          "/api/v1/user/metal/get?userId=${Preference.getData(key: "userId")}",
-    )
-        .then((value) {
-      model = MetalsModel.fromJson(value);
-      print(model?.metal?.rh);
-      if (model!.success == true) {
-        emit(successState());
-      } else {
-        print("error with success");
-        emit(errorState("error with success"));
-      }
-    }).catchError((err) {
-      print(err.toString());
-      emit(errorState(err.toString()));
-    });
+    try {
+      Response result = await DioHelper.getData(
+          url:
+              "${ApiConst.baseUrl}user/metal/get?userId=${Preference.getData(key: "userId")}",
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer ${Preference.getData(key: "token")}',
+              'x-app-token': 'Catalyst-Team'
+            },
+          ));
+      model = MetalItem.fromJson(result.data["metal"]);
+
+      emit(successState(MetalItem.fromJson(result.data["metal"])));
+    } on DioException catch (e) {
+      print(e.error);
+      print(e.message);
+
+      emit(errorState("An error occurred while searching."));
+    }
   }
 
   void TimerGetMetals() async {

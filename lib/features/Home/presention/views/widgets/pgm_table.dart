@@ -25,11 +25,12 @@ class _PGMTableState extends State<PGMTable> {
     late dynamic c1t3;
     late dynamic c1t4;
 
-    return BlocBuilder<MetalsCubit, MetalsState>(
+    return BlocConsumer<MetalsCubit, MetalsState>(
+      listener: (context, state) {},
       builder: (context, state) {
-        c1t1 = BlocProvider.of<MetalsCubit>(context).model?.metal?.pt ?? 0;
-        c1t2 = BlocProvider.of<MetalsCubit>(context).model?.metal?.pd ?? 0;
-        c1t3 = BlocProvider.of<MetalsCubit>(context).model?.metal?.rh ?? 0;
+        c1t1 = BlocProvider.of<MetalsCubit>(context).model?.pt ?? 0;
+        c1t2 = BlocProvider.of<MetalsCubit>(context).model?.pd ?? 0;
+        c1t3 = BlocProvider.of<MetalsCubit>(context).model?.rh ?? 0;
         c1t4 = 0;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -111,23 +112,21 @@ class _PGMTableState extends State<PGMTable> {
                       text1: "pt",
                       text2: "pd",
                       text3: "rh",
-                      text4: "Au",
                     ),
                     const Spacer(),
-                    const Up_DownCalumn(),
+                    if (MetalsCubit.get(context).model != null)
+                      Up_DownCalumn(model: MetalsCubit.get(context).model!),
                     const Spacer(),
                     MetalsColumn(
                       text1: c1t1.toStringAsFixed(2),
                       text2: c1t2.toStringAsFixed(2),
                       text3: c1t3.toStringAsFixed(2),
-                      text4: c1t4.toStringAsFixed(2),
                     ),
                     const Spacer(),
                     MetalsColumn(
                       text1: (c1t1 / 31.105).toStringAsFixed(2),
                       text2: (c1t2 / 31.9).toStringAsFixed(2),
                       text3: (c1t3 / 35.8).toStringAsFixed(2),
-                      text4: (c1t4 / 31.10).toStringAsFixed(2),
                     ),
                     const Spacer(),
                   ],

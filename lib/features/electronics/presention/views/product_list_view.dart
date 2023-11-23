@@ -1,4 +1,4 @@
-
+import 'package:cat_price/features/electronics/presention/views/widgets/electronics_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cat_price/features/electronics/presention/views/product_details_view.dart';
@@ -7,10 +7,10 @@ import '../manager/electronics/electronics_cubit.dart';
 import 'electronics_view.dart';
 
 class ProductListView extends StatelessWidget {
-  const ProductListView({Key? key, required this.title, this.type})
+  const ProductListView({Key? key, required this.title, required this.type})
       : super(key: key);
   final String title;
-  final String? type;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +21,21 @@ class ProductListView extends StatelessWidget {
           title: Text(title),
           centerTitle: true,
           backgroundColor: Colors.transparent,
+          leading:IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ElectronicsView(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+          ),
+
           elevation: 0,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const ElectronicsView(),
-                ));
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
         ),
         body: BlocBuilder<ElectronicsCubit, ElectronicsState>(
           builder: (context, state) {
@@ -49,7 +55,10 @@ class ProductListView extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProductListView(title: title),
+                            builder: (context) => ProductListView(
+                              title: title,
+                              type: type,
+                            ),
                           ));
                         },
                         child: const Icon(Icons.restart_alt_outlined))
@@ -66,6 +75,7 @@ class ProductListView extends StatelessWidget {
                       builder: (context) => ProductDetailsView(
                         title: title,
                         product: ElectronicsCubit.get(context).items[index],
+                        type: type,
                         itemIndex: index,
                       ),
                     ));
@@ -91,8 +101,7 @@ class ProductListView extends StatelessWidget {
                                     image: NetworkImage(
                                         ElectronicsCubit.get(context)
                                             .items[index]
-                                            .image!
-                                            .url),
+                                            .image!),
                                     fit: BoxFit.cover)
                                 : const DecorationImage(
                                     image:

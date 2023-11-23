@@ -39,9 +39,9 @@ class _BasicCalculaterState extends State<BasicCalculater> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    c1t1=BlocProvider.of<MetalsCubit>(context).model?.metal?.pt??0;
-    c1t2=BlocProvider.of<MetalsCubit>(context).model?.metal?.pd??0;
-    c1t3=BlocProvider.of<MetalsCubit>(context).model?.metal?.rh??0;
+    c1t1=BlocProvider.of<MetalsCubit>(context).model?.pt??0;
+    c1t2=BlocProvider.of<MetalsCubit>(context).model?.pd??0;
+    c1t3=BlocProvider.of<MetalsCubit>(context).model?.rh??0;
     c1t4=0;
     ptController.text = c1t1.toStringAsFixed(2);
     pdController.text = c1t2.toStringAsFixed(2);

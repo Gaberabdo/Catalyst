@@ -1,8 +1,11 @@
-
 import 'package:cat_price/core/core-brand/utiles/app_variables.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:cat_price/core/core-brand/utiles/api_service.dart';
+import 'package:dio/dio.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/core-brand/utiles/api_const.dart';
+import '../../../../settings/components/models/brand_model.dart';
 import '../../../data/models/catalog_model.dart';
 import '../../../data/repos/category_repo.dart';
 import '../../../data/repos/category_repo_imp.dart';
@@ -117,7 +120,7 @@ class CategoryCubit extends Cubit<CategoryState> {
     CategoryRepoImpl().fetchBrands().then((value) {
       value.fold((l) {}, (r) {
         for (int i = 0; i < r.length; i++) {
-          AppVariables.brandsImage.add(r[i].image.imageUrl?['url']);
+          AppVariables.brandsImage.add(r[i].imageUrl?['url']);
           AppVariables.brandList.add(r[i].name);
         }
         print("AppVariables.brandsImage +++++++");
@@ -147,4 +150,7 @@ class CategoryCubit extends Cubit<CategoryState> {
       print(AppVariables.catalyticList);
     });
   }
+
+
+
 }
