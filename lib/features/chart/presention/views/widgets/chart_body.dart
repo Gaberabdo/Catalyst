@@ -11,7 +11,7 @@ class ChartBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 26, left: 4),
+      padding: const EdgeInsets.only(right: 20, left: 4),
       child: SingleChildScrollView(
         child: BlocBuilder<ChartCubit, ChartState>(
           builder: (context, state) {
@@ -88,7 +88,7 @@ class ChartBody extends StatelessWidget {
                   height: 12,
                 ),
                 AspectRatio(
-                  aspectRatio: 1.3,
+                  aspectRatio: 1.7,
                   child: LineChart(mainData(
                       spots: ChartCubit.get(context).currentDataXPD,
                       context: context)),
@@ -108,13 +108,11 @@ class ChartBody extends StatelessWidget {
                   height: 12,
                 ),
                 AspectRatio(
-                  aspectRatio: .5,
-                  child: LineChart(
-                    mainData(
-                      spots: ChartCubit.get(context).currentDataXPT,
-                      context: context,
-                    ),
-                  ),
+                  aspectRatio: 1.7,
+                  child: LineChart(mainData(
+                    spots: ChartCubit.get(context).currentDataXPT,
+                    context: context,
+                  )),
                 ),
                 Padding(
                   padding: EdgeInsets.all(4.0),
@@ -128,11 +126,14 @@ class ChartBody extends StatelessWidget {
                   height: 12,
                 ),
                 AspectRatio(
-                  aspectRatio: .5,
+                  aspectRatio: 1.7,
                   child: LineChart(mainData(
                     spots: ChartCubit.get(context).currentDataXRH,
                     context: context,
                   )),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
               ],
             );
@@ -153,6 +154,7 @@ class ChartBody extends StatelessWidget {
             .map((spot) => spot.y)
             .reduce((max, current) => max > current ? max : current)
         : 0;
+
     return LineChartData(
       borderData: FlBorderData(
         show: true,
@@ -160,20 +162,22 @@ class ChartBody extends StatelessWidget {
       titlesData: FlTitlesData(
         show: true,
         leftTitles: const AxisTitles(
-            sideTitles: SideTitles(
-                reservedSize: 45,
-                //interval: minY == 0 ? 1 : (maxY - minY) / 5,
-                showTitles: true)),
+          sideTitles: SideTitles(
+            reservedSize: 50,
+            showTitles: true,
+          ),
+        ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-
+            interval: 1,
             //  getTitlesWidget: bottomTitleWidgets
             getTitlesWidget: (value, meta) {
               if (ChartCubit.get(context).selectedIndex == 0) {
                 return SideTitleWidget(
                   axisSide: meta.axisSide,
+                  angle: 370,
                   child: ChartCubit.get(context).daysNames.isNotEmpty
                       ? Text(ChartCubit.get(context).daysNames[value.toInt()])
                       : const Text(""),
@@ -193,16 +197,16 @@ class ChartBody extends StatelessWidget {
           ),
         ),
         rightTitles: const AxisTitles(
-          drawBelowEverything: false,
-        ),
+            drawBelowEverything: false,
+            axisNameWidget: Align(
+              alignment: Alignment.center,
+            )),
         topTitles: const AxisTitles(drawBelowEverything: false),
       ),
       minX: 0,
       maxX: spots.length.toDouble() - 1,
-      minY: minY - 20,
-      maxY: maxY + 30,
-      // minY: minY,
-      // maxY: 1300 + 100, // maxY == 0 ? 1 : (maxY + maxY / 5),
+      minY: ((minY ~/ 100) * 100 + (minY % 10)),
+      maxY: maxY > 1000 ? (maxY + 100) : (maxY + 50),
       lineBarsData: [
         LineChartBarData(
           spots: spots,
