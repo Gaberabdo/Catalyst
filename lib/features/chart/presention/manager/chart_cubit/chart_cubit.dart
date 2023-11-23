@@ -1,6 +1,9 @@
 import 'dart:async';
 
-
+import 'package:chart_project/chart/data/cache_daily_model.dart';
+import 'package:chart_project/chart/data/week_model.dart';
+import 'package:chart_project/services/dio_helper.dart';
+import 'package:chart_project/services/preferences.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,14 +11,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
-
-
-import '../../../../../core/services/dio_helper.dart';
-import '../../../../../core/services/preferences.dart';
-import '../../../data/cache_daily_model.dart';
 import '../../../data/cache_week_model.dart';
 import '../../../data/metal_model.dart';
-import '../../../data/week_model.dart';
 
 part 'chart_state.dart';
 
@@ -44,7 +41,6 @@ class ChartCubit extends Cubit<ChartState> {
   List<FlSpot> weekDataPD = [];
   List<FlSpot> weekDataPT = [];
   List<FlSpot> weekDataRH = [];
-
   List<dynamic> weakDates = [];
 
   //-----------------------------------
@@ -59,6 +55,7 @@ class ChartCubit extends Cubit<ChartState> {
     // Fetch data initially and every 6 hours
     await fetchDataCheckerDaily();
     await weekDataChecker();
+
     changeChartData(0);
 
     // _timer = Timer.periodic(Duration(minutes: 600), (timer) {
@@ -70,7 +67,8 @@ class ChartCubit extends Cubit<ChartState> {
   void fetchDailyData() async {
     emit(ChartInitial());
     try {
-      final response = await Diohelper.getData(
+      //(change user id)
+      final response = await DioHelper.getData(
         url:
             'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/get?userId=655918f10f9a784499a26041',
       );
@@ -79,21 +77,22 @@ class ChartCubit extends Cubit<ChartState> {
         final data = response.data;
         MetalData metalData = MetalData.fromJson(data);
         List<double> pdDouble = metalData.metal.pdDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXPD = convertDataToFlSpots(pdDouble);
         currentDataXPD = dayDataXPD;
-
         List<double> ptDouble = metalData.metal.ptDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXPT = convertDataToFlSpots(ptDouble);
         currentDataXPT = dayDataXPT;
         List<double> rhDouble = metalData.metal.rhDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXRH = convertDataToFlSpots(rhDouble);
         currentDataXRH = dayDataXRH;
+        daysNames = metalData.metal.date;
+        print(daysNames.length);
         Preferences.saveCacheModelDaily(CacheModelDaily(
           lastTime: DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now()),
           listDoubleXpdDaily: convertDataToDouble(dayDataXPD),
@@ -105,6 +104,7 @@ class ChartCubit extends Cubit<ChartState> {
         emit(ChartSuccess(currentDataXPD));
       } else {}
     } catch (e) {
+      print(e.toString());
       emit(ChartFailure());
     }
   }
@@ -115,7 +115,7 @@ class ChartCubit extends Cubit<ChartState> {
     weekDataRH = [];
     emit(ChartInitialM());
     try {
-      final response = await Diohelper.getData(
+      final response = await DioHelper.getData(
           url:
               'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries',
           x_app_token: 'Catalyst-Team');
@@ -124,7 +124,6 @@ class ChartCubit extends Cubit<ChartState> {
       //     'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries');
       if (response.statusCode == 200) {
         final data = response.data;
-        //var history = RatesResponse(rates: jsonData);
         WeekModel weekData = WeekModel.fromJson(data);
         weekDataPD = convertDataToFlSpots(weekData.pdHistory);
         weekDataPT = convertDataToFlSpots(weekData.ptHistory);
