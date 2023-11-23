@@ -1,9 +1,11 @@
 import 'dart:async';
 
-import 'package:chart_project/chart/data/cache_daily_model.dart';
-import 'package:chart_project/chart/data/week_model.dart';
-import 'package:chart_project/services/dio_helper.dart';
-import 'package:chart_project/services/preferences.dart';
+import '../../../../services/dio_helper.dart';
+import '../../../../services/preferences.dart';
+import '../../../data/cache_daily_model.dart';
+import '../../../data/cache_week_model.dart';
+import '../../../data/metal_model.dart';
+import '../../../data/week_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +13,6 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/cache_week_model.dart';
-import '../../../data/metal_model.dart';
 
 part 'chart_state.dart';
 
