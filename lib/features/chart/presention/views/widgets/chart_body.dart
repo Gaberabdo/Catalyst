@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../manager/chart_cubit/chart_cubit.dart';
-
 class ChartBody extends StatelessWidget {
   const ChartBody({Key? key}) : super(key: key);
 
@@ -79,6 +78,24 @@ class ChartBody extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(4.0),
                   child: Text(
+                    S.of(context).Platinum,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                AspectRatio(
+                  aspectRatio: 1.7,
+                  child: LineChart(mainData(
+                    spots: ChartCubit.get(context).currentDataXPT,
+                    context: context,
+                  )),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Text(
                     S.of(context).Palladium,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
@@ -95,24 +112,6 @@ class ChartBody extends StatelessWidget {
                 ),
                 const SizedBox(
                   height: 12,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Text(
-                    S.of(context).Platinum,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                AspectRatio(
-                  aspectRatio: 1.7,
-                  child: LineChart(mainData(
-                    spots: ChartCubit.get(context).currentDataXPT,
-                    context: context,
-                  )),
                 ),
                 Padding(
                   padding: EdgeInsets.all(4.0),
@@ -227,3 +226,4 @@ class ChartBody extends StatelessWidget {
     );
   }
 }
+
