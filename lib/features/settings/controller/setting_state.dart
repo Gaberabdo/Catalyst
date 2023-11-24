@@ -14,8 +14,13 @@ class GetBrandSuccess extends SettingState {
 }
 
 class GetBrandError extends SettingState {}
+class UpdateRadioValue extends SettingState {}
 
-class RadioState extends SettingState {}
+class RadioState extends SettingState {
+  String lang;
+
+  RadioState(this.lang);
+}
 
 class ChangerPasswordVisibility extends SettingState {}
 

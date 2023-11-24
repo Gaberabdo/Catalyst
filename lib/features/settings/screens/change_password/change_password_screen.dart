@@ -33,6 +33,9 @@ class ChangePasswordScreen extends StatelessWidget {
               fct: () {},
             );
           }
+          if (state is ChangePasswordSuccess) {
+            Navigator.pop(context);
+          }
         },
         builder: (context, state) {
           var cubit = SettingCubit.get(context);
@@ -209,9 +212,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             oldPassword: oldPassController.text,
                             newPassword: newPassController.text,
                             conPassword: conPassController.text,
-                          ).then((value) {
-                            Navigator.pop(context);
-                          });
+                          );
                         }
                       },
                       child: Container(

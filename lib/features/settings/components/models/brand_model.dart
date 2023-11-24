@@ -3,6 +3,7 @@ class Brand {
   late final String? admin;
   late final String? details;
   late final String? name;
+  late final dynamic? price;
   late final dynamic? v;
   late final BrandImage? image;
   late final String? imageString;
@@ -12,6 +13,7 @@ class Brand {
     this.admin,
     this.name,
     this.details,
+    this.price,
     this.imageString,
     this.image,
     this.v,
@@ -24,6 +26,7 @@ class Brand {
       v: json['__v'],
       details: json['details'],
       name: json['name'],
+      price: json['price'],
       imageString : json['image'] is String ? json['image'] : null,
       image : json['image'] == null
           ? null

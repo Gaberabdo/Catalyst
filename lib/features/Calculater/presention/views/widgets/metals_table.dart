@@ -102,11 +102,7 @@ class MetalsTable extends StatelessWidget {
               const Spacer(),
             ],
           ),
-          const MetalRow(
-              text: "pt return 0.98",
-              ounce: "pd return 0.98",
-              gram: "rh return 0.90"),
-          const SizedBox(height: 10),
+
         ],
       ),
     );

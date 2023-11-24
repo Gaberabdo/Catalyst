@@ -11,25 +11,16 @@ class ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChartCubit()
-        ..fetchDataCheckerDaily()
-        ..weekDataChecker(),
+      create: (context) => ChartCubit()..startFetchingData(),
       lazy: false,
-      child: BlocConsumer<ChartCubit, ChartState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: MediaQuery.of(context).size.height * 0.05,
-              title: Text(S.of(context).Charts),
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-            ),
-            body: const ChartBody(),
-          );
-        },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.05,
+          title: Text(S.of(context).Charts),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+        ),
+        body: const ChartBody(),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+import '../../../../core/SharedPreference.dart';
 import '../../../../core/core-brand/utiles/app_functions.dart';
 import '../../../../core/core-brand/utiles/app_variables.dart';
 import '../../../../core/core-brand/utiles/assets_manager.dart';
@@ -126,7 +127,7 @@ class ViewProduct extends StatelessWidget {
                           width: 7,
                         ),
                         Text(
-                          model.userId?["country"] ?? "No Country",
+                          Preference.getData(key: "name"),
                           style: AppStyles.textStyle14,
                         ),
                       ],

@@ -4,7 +4,8 @@ class Item {
   final dynamic name;
   final dynamic price;
   final dynamic brand;
-  final dynamic? image; // Assuming image can be null
+  final dynamic image; // Assuming image can be null
+  final List<ImageDetails> imageList; // Assuming image can be null
   bool? isFavorite;
 
   Item({
@@ -13,6 +14,7 @@ class Item {
     required this.name,
     required this.price,
     required this.brand,
+    required this.imageList,
     required this.image,
     this.isFavorite,
   });
@@ -22,6 +24,9 @@ class Item {
       id: json['_id'],
       userId: json['userId'],
       name: json['name'],
+      imageList:  (json['listOfImages'] as List)
+          .map((image) => ImageDetails.fromJson(image))
+          .toList(),
       price: json['price'].toDouble(),
       brand: json['brand'],
       image: json['image'] == null

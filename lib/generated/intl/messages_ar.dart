@@ -67,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "PerOunce": MessageLookupByLibrary.simpleMessage("لكل أونصة"),
         "Petrol": MessageLookupByLibrary.simpleMessage("بترول"),
         "Phone": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
-        "Platinum": MessageLookupByLibrary.simpleMessage("البلاديوم"),
+        "Platinum": MessageLookupByLibrary.simpleMessage("البلاتنيوم"),
         "PowerSupply": MessageLookupByLibrary.simpleMessage("مزود الطاقة"),
         "Price": MessageLookupByLibrary.simpleMessage("السعر"),
         "PriceDollar": MessageLookupByLibrary.simpleMessage("سعر الدولار"),
@@ -101,9 +101,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "مرحبًا بك في تطبيقنا أسعار القطع"),
         "WelcomeBackWemissedyou":
             MessageLookupByLibrary.simpleMessage("مرحبا بعودتك ,لقد افتقدناك"),
+        "accountNumberOrName": MessageLookupByLibrary.simpleMessage(
+            "اسم/ رقم الحساب الذى تم تحويل المبلغ منه"),
         "addItem": MessageLookupByLibrary.simpleMessage("اضافة عنصر"),
         "approved": MessageLookupByLibrary.simpleMessage("تم القبول"),
         "brand": MessageLookupByLibrary.simpleMessage("الماركة"),
+        "broSubscription": MessageLookupByLibrary.simpleMessage("اشتراك اخر"),
+        "calculator": MessageLookupByLibrary.simpleMessage("الحاسبة"),
+        "catPrice": MessageLookupByLibrary.simpleMessage("أسعار القطع"),
         "catalytic":
             MessageLookupByLibrary.simpleMessage("الشركة المصنعة الحفازة"),
         "changePassword":
@@ -114,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
         "connects": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+        "cost": MessageLookupByLibrary.simpleMessage("التكلفة"),
         "createItem": MessageLookupByLibrary.simpleMessage("اضافة عنصر"),
         "currency": MessageLookupByLibrary.simpleMessage("العملة"),
         "currentPassword":
@@ -125,6 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصى"),
         "editeItem": MessageLookupByLibrary.simpleMessage("تعديل العنصر"),
         "electronics": MessageLookupByLibrary.simpleMessage("الالكترونيات"),
+        "fullSearch": MessageLookupByLibrary.simpleMessage("بحث كامل"),
+        "goldSubscription":
+            MessageLookupByLibrary.simpleMessage("الاشتراك الذهبى"),
         "inProgress": MessageLookupByLibrary.simpleMessage("قيد الطلب"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("التفاصيل"),
         "itemName": MessageLookupByLibrary.simpleMessage("اسم العنصر"),
@@ -135,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "message": MessageLookupByLibrary.simpleMessage("الرسالة"),
         "messageAdmin": MessageLookupByLibrary.simpleMessage(
             "يرجى الاتصال بالمسؤول عن طريق إرسال بريد جوجل"),
+        "monthly": MessageLookupByLibrary.simpleMessage("شهريا"),
+        "myCatalog": MessageLookupByLibrary.simpleMessage("قائمتى"),
         "myItems": MessageLookupByLibrary.simpleMessage("عناصرى"),
         "myList": MessageLookupByLibrary.simpleMessage("قائمتي"),
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
@@ -143,9 +154,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItem": MessageLookupByLibrary.simpleMessage("لا توجد عناصر"),
         "noResult": MessageLookupByLibrary.simpleMessage("لا يوجد نتائج"),
         "paladium": MessageLookupByLibrary.simpleMessage("Palladium/ppm"),
+        "payNow": MessageLookupByLibrary.simpleMessage("ادفع الآن"),
+        "paymentHistory": MessageLookupByLibrary.simpleMessage("سجل الدفع"),
+        "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
         "pickAnotherImage":
             MessageLookupByLibrary.simpleMessage("اختيار صورة اخرى"),
         "platinum": MessageLookupByLibrary.simpleMessage("Platinum/ppm"),
+        "platinumSubscription":
+            MessageLookupByLibrary.simpleMessage("الاشتراك البلاتيني"),
         "price": MessageLookupByLibrary.simpleMessage("السعر"),
         "priceList": MessageLookupByLibrary.simpleMessage("قائمة الاسعار"),
         "product": MessageLookupByLibrary.simpleMessage("المنتج"),
@@ -161,11 +177,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToAdmin": MessageLookupByLibrary.simpleMessage("ارسال الى الادمن"),
         "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
         "showPhoto": MessageLookupByLibrary.simpleMessage("اظهار الصورة"),
+        "submit": MessageLookupByLibrary.simpleMessage("إرسال"),
+        "subscription": MessageLookupByLibrary.simpleMessage("الاشتراك"),
+        "subscriptionType":
+            MessageLookupByLibrary.simpleMessage("نوع الاشتراك"),
         "title": MessageLookupByLibrary.simpleMessage("كتالوجى"),
         "totalPrice": MessageLookupByLibrary.simpleMessage("السعر الكلي"),
         "update": MessageLookupByLibrary.simpleMessage("تعديل القائمة"),
         "uploadImage": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
+        "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+        "users": MessageLookupByLibrary.simpleMessage("1 مستخدم"),
         "view": MessageLookupByLibrary.simpleMessage("رؤية"),
-        "weight": MessageLookupByLibrary.simpleMessage("الوزن/جرام")
+        "weight": MessageLookupByLibrary.simpleMessage("الوزن/جرام"),
+        "yearly": MessageLookupByLibrary.simpleMessage("سنويا")
       };
 }

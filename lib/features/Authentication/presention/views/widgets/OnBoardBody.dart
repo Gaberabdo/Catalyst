@@ -9,25 +9,26 @@ import 'Auth_button.dart';
 import 'custom_board_item.dart';
 
 class OnBoardBody extends StatelessWidget {
-   OnBoardBody({super.key});
+  OnBoardBody({super.key});
 
   PageController controller = PageController();
-
-
 
   @override
   Widget build(BuildContext context) {
     List<OnBoardModel> board = [
       OnBoardModel(
-        image: "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen1.jpg?alt=media&token=18e2fe5e-b45f-41ca-aa81-9ffd3b118c49",
+        image:
+            "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen1.jpg?alt=media&token=18e2fe5e-b45f-41ca-aa81-9ffd3b118c49",
         text: S.of(context).Screen1,
       ),
       OnBoardModel(
-        image: "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen2.jpg?alt=media&token=0d61f69e-7739-46c7-b75c-3466e1435264",
+        image:
+            "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen2.jpg?alt=media&token=0d61f69e-7739-46c7-b75c-3466e1435264",
         text: S.of(context).Screen2,
       ),
       OnBoardModel(
-        image: "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen3.jpg?alt=media&token=38372976-f446-4364-b404-8400ad59cffe",
+        image:
+            "https://firebasestorage.googleapis.com/v0/b/mostakbal-acd29.appspot.com/o/screen3.jpg?alt=media&token=38372976-f446-4364-b404-8400ad59cffe",
         text: S.of(context).Screen3,
       ),
     ];
@@ -66,12 +67,12 @@ class OnBoardBody extends StatelessWidget {
             child: AuthButton(
               text: S.of(context).Start,
               ontab: () {
-                Get.to(
-                  () => const SignInView(),
-                  transition: Transition.rightToLeftWithFade,
-                  duration: const Duration(
-                    milliseconds: 400,
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignInView(),
                   ),
+                  (route) => false,
                 );
               },
             ),

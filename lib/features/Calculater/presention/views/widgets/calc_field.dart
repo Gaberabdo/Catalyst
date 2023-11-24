@@ -12,12 +12,7 @@ final IconData icon;
 
 class _CalculaterFieldState extends State<CalculaterField> {
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    widget.controller?.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {

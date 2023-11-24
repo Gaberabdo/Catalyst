@@ -16,8 +16,7 @@ class Diohelper {
     String? x_app_token,
   }) async {
     dio.options.headers = {
-      'Authorization':
-          'Bearer ${Preference.getData(key: 'token')}',
+      'Authorization': 'Bearer ${Preference.getData(key: 'token')}',
       'x-app-token': x_app_token,
     };
     return await dio.get(url);

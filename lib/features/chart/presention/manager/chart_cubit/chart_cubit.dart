@@ -1,18 +1,23 @@
 import 'dart:async';
 
+import 'package:cat_price/core/core-brand/utiles/api_const.dart';
+import 'package:cat_price/core/core-brand/utiles/api_service.dart';
+import 'package:dio/dio.dart';
+
+import '../../../../../core/SharedPreference.dart';
+import '../../../../../core/services/dio_helper.dart';
+import '../../../../../core/services/preferences.dart';
+
+import '../../../data/cache_daily_model.dart';
+import '../../../data/cache_week_model.dart';
+import '../../../data/metal_model.dart';
+import '../../../data/week_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-
-import '../../../../../core/services/dio_helper.dart';
-import '../../../../../core/services/preferences.dart';
-import '../../../data/cache_daily_model.dart';
-import '../../../data/cache_week_model.dart';
-import '../../../data/metal_model.dart';
-import '../../../data/week_model.dart';
 
 part 'chart_state.dart';
 
@@ -41,7 +46,6 @@ class ChartCubit extends Cubit<ChartState> {
   List<FlSpot> weekDataPD = [];
   List<FlSpot> weekDataPT = [];
   List<FlSpot> weekDataRH = [];
-
   List<dynamic> weakDates = [];
 
   //-----------------------------------
@@ -54,6 +58,8 @@ class ChartCubit extends Cubit<ChartState> {
 
   void startFetchingData() async {
     // Fetch data initially and every 6 hours
+    await fetchDataCheckerDaily();
+    await weekDataChecker();
 
     changeChartData(0);
 
@@ -66,30 +72,37 @@ class ChartCubit extends Cubit<ChartState> {
   void fetchDailyData() async {
     emit(ChartInitial());
     try {
-      final response = await Diohelper.getData(
-        url:
-            'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/get?userId=655918f10f9a784499a26041',
+      //(change user id)
+      final response = await DioHelper.getData(
+        url: '${ApiConst.baseUrl}user/metal/get?userId=${Preference.getData(key: 'userId')}',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${Preference.getData(key: "token")}',
+            'x-app-token': 'Catalyst-Team'
+          },
+        )
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
         MetalData metalData = MetalData.fromJson(data);
         List<double> pdDouble = metalData.metal.pdDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXPD = convertDataToFlSpots(pdDouble);
         currentDataXPD = dayDataXPD;
-
         List<double> ptDouble = metalData.metal.ptDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXPT = convertDataToFlSpots(ptDouble);
         currentDataXPT = dayDataXPT;
         List<double> rhDouble = metalData.metal.rhDaily
-            .map((int value) => value.toDouble())
+            .map((num value) => value.toDouble())
             .toList();
         dayDataXRH = convertDataToFlSpots(rhDouble);
         currentDataXRH = dayDataXRH;
+        daysNames = metalData.metal.date;
+        print(daysNames.length);
         Preferences.saveCacheModelDaily(CacheModelDaily(
           lastTime: DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now()),
           listDoubleXpdDaily: convertDataToDouble(dayDataXPD),
@@ -101,6 +114,7 @@ class ChartCubit extends Cubit<ChartState> {
         emit(ChartSuccess(currentDataXPD));
       } else {}
     } catch (e) {
+      print(e.toString());
       emit(ChartFailure());
     }
   }
@@ -112,8 +126,7 @@ class ChartCubit extends Cubit<ChartState> {
     emit(ChartInitialM());
     try {
       final response = await Diohelper.getData(
-        url:
-            'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries',
+        url: 'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries',
         x_app_token: 'Catalyst-Team',
       );
 
@@ -121,7 +134,6 @@ class ChartCubit extends Cubit<ChartState> {
       //     'https://catprice-588efcf30992.herokuapp.com/api/v1/user/metal/timeseries');
       if (response.statusCode == 200) {
         final data = response.data;
-        //var history = RatesResponse(rates: jsonData);
         WeekModel weekData = WeekModel.fromJson(data);
         weekDataPD = convertDataToFlSpots(weekData.pdHistory);
         weekDataPT = convertDataToFlSpots(weekData.ptHistory);

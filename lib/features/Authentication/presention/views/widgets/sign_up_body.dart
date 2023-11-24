@@ -1,8 +1,7 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart 'as bloc;
+import 'package:flutter_bloc/flutter_bloc.dart ' as bloc;
 import 'package:get/get.dart';
 import 'package:cat_price/features/Authentication/presention/manager/Auth_cubit/state.dart';
 import 'package:cat_price/generated/l10n.dart';
@@ -14,14 +13,13 @@ import 'Auth_button.dart';
 import 'customTextField.dart';
 
 class SignUpBody extends StatefulWidget {
-  const  SignUpBody({super.key});
+  const SignUpBody({super.key});
 
   @override
   State<SignUpBody> createState() => _SignInBodyState();
 }
 
 class _SignInBodyState extends State<SignUpBody> {
-
   GlobalKey<FormState> formkey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
@@ -205,9 +203,14 @@ class _SignInBodyState extends State<SignUpBody> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.to(() => const SignInView(),
-                            transition: Transition.leftToRight,
-                            duration: const Duration(milliseconds: 400));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return SignInView();
+                            },
+                          ),
+                        );
                       },
                       child: Text(
                         S.of(context).Signin,
@@ -221,8 +224,6 @@ class _SignInBodyState extends State<SignUpBody> {
                     ),
                   ],
                 ),
-
-
               ],
             ),
           ),

@@ -70,9 +70,11 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       child: SearchBar(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchView()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchView(),
+                            ),
+                          );
                         },
                         leading: const Icon(FontAwesomeIcons.magnifyingGlass,
                             color: Color(0xff9094A0)),
@@ -155,10 +157,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     child: CircularProgressIndicator(
                   color: Colors.black,
                 )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: const MovingText(),
               ),
             ],
           ),

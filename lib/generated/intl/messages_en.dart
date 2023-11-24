@@ -103,9 +103,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Welcome To Our App Cat price"),
         "WelcomeBackWemissedyou":
             MessageLookupByLibrary.simpleMessage("Welcome Back ,We missed you"),
+        "accountNumberOrName":
+            MessageLookupByLibrary.simpleMessage("Account Number/Name"),
         "addItem": MessageLookupByLibrary.simpleMessage("Add item"),
         "approved": MessageLookupByLibrary.simpleMessage("Approved"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
+        "broSubscription":
+            MessageLookupByLibrary.simpleMessage("Bro Subscription"),
+        "calculator": MessageLookupByLibrary.simpleMessage("Calculator"),
+        "catPrice": MessageLookupByLibrary.simpleMessage("Cat Price"),
         "catalytic":
             MessageLookupByLibrary.simpleMessage("Catalytic Manufacturer"),
         "changePassword":
@@ -116,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "connects": MessageLookupByLibrary.simpleMessage("Connect Us"),
+        "cost": MessageLookupByLibrary.simpleMessage("Cost"),
         "createItem": MessageLookupByLibrary.simpleMessage("Create Item"),
         "currency": MessageLookupByLibrary.simpleMessage("Currency"),
         "currentPassword":
@@ -127,6 +134,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
         "editeItem": MessageLookupByLibrary.simpleMessage("Edit Item"),
         "electronics": MessageLookupByLibrary.simpleMessage("electronics"),
+        "fullSearch": MessageLookupByLibrary.simpleMessage("Full Search"),
+        "goldSubscription":
+            MessageLookupByLibrary.simpleMessage("Gold Subscription"),
         "inProgress": MessageLookupByLibrary.simpleMessage("In Progress"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "itemName": MessageLookupByLibrary.simpleMessage("Item Name"),
@@ -137,6 +147,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "message": MessageLookupByLibrary.simpleMessage("Message"),
         "messageAdmin": MessageLookupByLibrary.simpleMessage(
             "Please Contact The administrator by sending an gmail"),
+        "monthly": MessageLookupByLibrary.simpleMessage("Monthly"),
+        "myCatalog": MessageLookupByLibrary.simpleMessage("My Catalog"),
         "myItems": MessageLookupByLibrary.simpleMessage("My Items"),
         "myList": MessageLookupByLibrary.simpleMessage("My list"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
@@ -144,9 +156,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "noItem": MessageLookupByLibrary.simpleMessage("No Items"),
         "noResult": MessageLookupByLibrary.simpleMessage("No Result"),
         "paladium": MessageLookupByLibrary.simpleMessage("Palladium/ppm"),
+        "payNow": MessageLookupByLibrary.simpleMessage("Pay Now"),
+        "paymentHistory":
+            MessageLookupByLibrary.simpleMessage("Payment History"),
+        "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
         "pickAnotherImage":
             MessageLookupByLibrary.simpleMessage("Pick another image"),
         "platinum": MessageLookupByLibrary.simpleMessage("Platinum/ppm"),
+        "platinumSubscription":
+            MessageLookupByLibrary.simpleMessage("Platinum Subscription"),
         "price": MessageLookupByLibrary.simpleMessage("price"),
         "priceList": MessageLookupByLibrary.simpleMessage("price list"),
         "product": MessageLookupByLibrary.simpleMessage("Product"),
@@ -162,11 +180,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToAdmin": MessageLookupByLibrary.simpleMessage("Send to Admin"),
         "share": MessageLookupByLibrary.simpleMessage("Share"),
         "showPhoto": MessageLookupByLibrary.simpleMessage("Show Photo"),
+        "submit": MessageLookupByLibrary.simpleMessage("Submit"),
+        "subscription": MessageLookupByLibrary.simpleMessage("Subscription"),
+        "subscriptionType":
+            MessageLookupByLibrary.simpleMessage("Subscription Type"),
         "title": MessageLookupByLibrary.simpleMessage("My Catalog"),
         "totalPrice": MessageLookupByLibrary.simpleMessage("Total price"),
         "update": MessageLookupByLibrary.simpleMessage("Update List"),
         "uploadImage": MessageLookupByLibrary.simpleMessage("Upload  image"),
+        "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "users": MessageLookupByLibrary.simpleMessage("Users"),
         "view": MessageLookupByLibrary.simpleMessage("View"),
-        "weight": MessageLookupByLibrary.simpleMessage("Weight/gr")
+        "weight": MessageLookupByLibrary.simpleMessage("Weight/gr"),
+        "yearly": MessageLookupByLibrary.simpleMessage("Yearly")
       };
 }

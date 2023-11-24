@@ -96,6 +96,7 @@ class MetalsCubit extends Cubit<MetalsState> {
               'x-app-token': 'Catalyst-Team'
             },
           ));
+      print(result.data);
       emit(SearchSuccessState(List<Item>.from(
           (result.data["items"] as List).map((e) => Item.fromJson(e)))));
     } on DioException catch (e) {

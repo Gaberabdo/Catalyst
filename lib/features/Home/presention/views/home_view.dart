@@ -1,9 +1,11 @@
+import 'package:cat_price/features/Home/presention/views/widgets/moving_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cat_price/features/Home/presention/views/widgets/drawer_body.dart';
 import 'package:cat_price/features/Home/presention/views/widgets/home_view_body.dart';
 
+import '../../../../generated/l10n.dart';
 import '../manager/metals_cubit/cubit.dart';
 import '../manager/metals_cubit/state.dart';
 
@@ -17,8 +19,8 @@ class HomeView extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xffFBC821),
         elevation: 0,
-        title: const Text(
-          'Cat price',
+        title:  Text(
+          S.of(context).catPrice,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -40,6 +42,7 @@ class HomeView extends StatelessWidget {
         child: DrawerBody(),
       ),
       body: const HomeViewBody(),
+      bottomNavigationBar: const MovingText(),
     );
   }
 }

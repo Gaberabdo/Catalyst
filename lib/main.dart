@@ -1,5 +1,7 @@
+import 'package:cat_price/core/core-brand/observer/observer.dart';
 import 'package:cat_price/core/core-price-cat/network/remote/dio_helper.dart';
 import 'package:cat_price/features/Authentication/presention/manager/Auth_cubit/cubit.dart';
+import 'package:cat_price/features/subscripation-feature/subscriptinon_cubit/subscription_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,7 +24,7 @@ import 'features/splash-screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
-
+  Bloc.observer = MyBlocObserver();
   await Preference.init();
   await Preferences.init();
   await Diohelper.init();
@@ -32,14 +34,16 @@ void main() async {
   token = Preference.getData(key: "token");
   late Widget widget;
 
-  if (token == null) {
-    widget = const OnBoardingView();
-  } else {
+  if (token != null) {
     widget = const HomeView();
+  } else {
+    widget = const OnBoardingView();
   }
-  runApp(MyApp(
-    widget: widget,
-  ));
+  runApp(
+    MyApp(
+      widget: widget,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -47,6 +51,8 @@ class MyApp extends StatelessWidget {
   final Widget widget;
   @override
   Widget build(BuildContext context) {
+    String lang = 'en';
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -63,6 +69,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ElectronicsCubit(),
         ),
+        BlocProvider(
+          create: (context) => SubscriptionCubit()..getAllSubscriptionPrices(),
+        ),
       ],
       child: BlocProvider(
         create: (context) => SettingCubit()
@@ -71,22 +80,23 @@ class MyApp extends StatelessWidget {
           ),
         child: BlocConsumer<SettingCubit, SettingState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state is RadioState) {
+              lang = state.lang;
+              print(lang);
+            }
           },
           builder: (context, state) {
             var cubit = SettingCubit.get(context);
-            return GetMaterialApp(
+            return MaterialApp(
               theme: ThemeData(
                 scaffoldBackgroundColor: Colors.white,
                 appBarTheme: AppBarTheme(
                   elevation: 0,
                   color: Colors.white,
-                  foregroundColor: Colors.black
-                )
+                  foregroundColor: Colors.black,
+                ),
               ),
-              locale: cubit.language == 'en'
-                  ? const Locale('en')
-                  : const Locale('ar'),
+              locale: (state is RadioState) ? Locale(state.lang) : Locale('en'),
               localizationsDelegates: const [
                 S.delegate,
                 GlobalMaterialLocalizations.delegate,

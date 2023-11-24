@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart%20';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,10 +15,13 @@ class BasicCalculater extends StatefulWidget {
 }
 
 class _BasicCalculaterState extends State<BasicCalculater> {
+
   late dynamic c1t1;
   late dynamic c1t2;
   late dynamic c1t3;
   late dynamic c1t4;
+
+
   final TextEditingController pdController = TextEditingController();
   final TextEditingController ptController = TextEditingController();
   final TextEditingController rhController = TextEditingController();
@@ -32,17 +34,20 @@ class _BasicCalculaterState extends State<BasicCalculater> {
   final TextEditingController pdReturnController = TextEditingController();
   final TextEditingController rhReturnController = TextEditingController();
 
-  dynamic pricetext="";
-  dynamic pricedollartext="";
+
+
+
+  dynamic pricetext = "";
+  dynamic pricedollartext = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    c1t1=BlocProvider.of<MetalsCubit>(context).model?.pt??0;
-    c1t2=BlocProvider.of<MetalsCubit>(context).model?.pd??0;
-    c1t3=BlocProvider.of<MetalsCubit>(context).model?.rh??0;
-    c1t4=0;
+    c1t1 = BlocProvider.of<MetalsCubit>(context).model?.pt ?? 0;
+    c1t2 = BlocProvider.of<MetalsCubit>(context).model?.pd ?? 0;
+    c1t3 = BlocProvider.of<MetalsCubit>(context).model?.rh ?? 0;
+    c1t4 = 0;
     ptController.text = c1t1.toStringAsFixed(2);
     pdController.text = c1t2.toStringAsFixed(2);
     rhController.text = c1t3.toStringAsFixed(2);
@@ -53,10 +58,36 @@ class _BasicCalculaterState extends State<BasicCalculater> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Column(
       children: [
+        Row(
+          children: [
+            SizedBox(
+                width: MediaQuery.sizeOf(context).width * .27,
+                child: CalculaterField(
+                  hintText: "pt return",
+                  icon: FontAwesomeIcons.percent,
+                  controller: ptReturnController,
+                )),
+            const Spacer(),
+            SizedBox(
+                width: MediaQuery.sizeOf(context).width * .27,
+                child: CalculaterField(
+                  hintText: "pd return",
+                  icon: Icons.percent,
+                  controller: pdReturnController,
+                )),
+            const Spacer(),
+            SizedBox(
+                width: MediaQuery.sizeOf(context).width * .27,
+                child: CalculaterField(
+                  hintText: "rh return",
+                  icon: Icons.percent,
+                  controller: rhReturnController,
+                )),
+          ],
+        ),
+        const SizedBox(height: 10),
         Center(
           child: Text(
             S.of(context).Calculator,
@@ -98,20 +129,22 @@ class _BasicCalculaterState extends State<BasicCalculater> {
         Row(
           children: [
             SizedBox(
-                width: MediaQuery.sizeOf(context).width * .42,
-                child: CalculaterField(
-                  hintText: "RH/Gram",
-                  icon: FontAwesomeIcons.dollarSign,
-                  controller: rhController,
-                )),
+              width: MediaQuery.sizeOf(context).width * .42,
+              child: CalculaterField(
+                hintText: "RH/Gram",
+                icon: FontAwesomeIcons.dollarSign,
+                controller: rhController,
+              ),
+            ),
             const Spacer(),
             SizedBox(
-                width: MediaQuery.sizeOf(context).width * .42,
-                child: CalculaterField(
-                  hintText: "Exchange",
-                  icon: Icons.currency_exchange,
-                  controller: exchhangeController,
-                )),
+              width: MediaQuery.sizeOf(context).width * .42,
+              child: CalculaterField(
+                hintText: "Exchange",
+                icon: Icons.currency_exchange,
+                controller: exchhangeController,
+              ),
+            ),
           ],
         ),
         const SizedBox(
@@ -121,27 +154,27 @@ class _BasicCalculaterState extends State<BasicCalculater> {
             hintText: S.of(context).WeightKG,
             icon: Icons.monitor_weight_rounded,
             controller: weightController),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: CalculaterField(
-              hintText: 'pt return',
-              icon: FontAwesomeIcons.dollarSign,
-              controller: ptReturnController),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: CalculaterField(
-              hintText: 'pd return',
-              icon: FontAwesomeIcons.dollarSign,
-              controller: pdReturnController),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: CalculaterField(
-              hintText: 'rh return',
-              icon: FontAwesomeIcons.dollarSign,
-              controller: rhReturnController),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 10),
+        //   child: CalculaterField(
+        //       hintText: 'pt return',
+        //       icon: FontAwesomeIcons.dollarSign,
+        //       controller: ptReturnController),
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 10),
+        //   child: CalculaterField(
+        //       hintText: 'pd return',
+        //       icon: FontAwesomeIcons.dollarSign,
+        //       controller: pdReturnController),
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 10),
+        //   child: CalculaterField(
+        //       hintText: 'rh return',
+        //       icon: FontAwesomeIcons.dollarSign,
+        //       controller: rhReturnController),
+        // ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: CalculaterField(
@@ -168,9 +201,11 @@ class _BasicCalculaterState extends State<BasicCalculater> {
           child: Container(
             padding: EdgeInsets.all(16),
             width: double.infinity,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            child: Center(child: Text("${S.of(context).PriceDollar}=${pricedollartext}")),
+            child: Center(
+                child: Text("${S.of(context).PriceDollar}=${pricedollartext}")),
           ),
         ),
         Padding(
@@ -178,7 +213,8 @@ class _BasicCalculaterState extends State<BasicCalculater> {
           child: Container(
             padding: EdgeInsets.all(16),
             width: double.infinity,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Center(child: Text("${S.of(context).Price}=${pricetext}")),
           ),
@@ -187,50 +223,48 @@ class _BasicCalculaterState extends State<BasicCalculater> {
           padding: const EdgeInsets.only(bottom: 33, top: 40),
           child: CalculatorButton(
             ontab: () {
-              if(exchhangeController.text.isEmpty){
+              if (exchhangeController.text.isEmpty) {
                 pricedollartext = getPriceDollar(
-                    pdppn: double.parse(pdppmController.text),
-                    pdgram: double.parse(pdController.text),
-                    pdreturn: double.parse(pdReturnController.text),
-                    ptreturn: double.parse(ptReturnController.text),
-                    rhreturn: double.parse(rhReturnController.text),
-                    weight: double.parse(weightController.text),
-                    ptppn: double.parse(ptppmController.text),
-                    ptgram: double.parse(ptController.text),
-                    rhppn: double.parse(rhppmController.text),
-                    rhgram: double.parse(rhController.text))
+                        pdppn: double.parse(pdppmController.text),
+                        pdgram: double.parse(pdController.text),
+                        pdreturn: double.parse(pdReturnController.text),
+                        ptreturn: double.parse(ptReturnController.text),
+                        rhreturn: double.parse(rhReturnController.text),
+                        weight: double.parse(weightController.text),
+                        ptppn: double.parse(ptppmController.text),
+                        ptgram: double.parse(ptController.text),
+                        rhppn: double.parse(rhppmController.text),
+                        rhgram: double.parse(rhController.text))
                     .toString();
                 setState(() {});
-              }
-              else{
+              } else {
                 pricetext = getPrice(
-                    pdppn: double.parse(pdppmController.text),
-                    rhreturn: double.parse(rhReturnController.text),
-                    ptreturn: double.parse(ptReturnController.text),
-                    pdreturn: double.parse(pdReturnController.text),
-                    pdgram: double.parse(pdController.text),
-                    weight: double.parse(weightController.text),
-                    ptppn: double.parse(ptppmController.text),
-                    ptgram: double.parse(ptController.text),
-                    rhppn: double.parse(rhppmController.text),
-                    rhgram: double.parse(rhController.text),
-                    exchange: double.parse(exchhangeController.text))
+                        pdppn: double.parse(pdppmController.text),
+                        rhreturn: double.parse(rhReturnController.text),
+                        ptreturn: double.parse(ptReturnController.text),
+                        pdreturn: double.parse(pdReturnController.text),
+                        pdgram: double.parse(pdController.text),
+                        weight: double.parse(weightController.text),
+                        ptppn: double.parse(ptppmController.text),
+                        ptgram: double.parse(ptController.text),
+                        rhppn: double.parse(rhppmController.text),
+                        rhgram: double.parse(rhController.text),
+                        exchange: double.parse(exchhangeController.text))
                     .toString();
                 pricedollartext = getPriceDollar(
-                    pdppn: double.parse(pdppmController.text),
-                    pdgram: double.parse(pdController.text),
-                    pdreturn: double.parse(pdReturnController.text),
-                    ptreturn: double.parse(ptReturnController.text),
-                    rhreturn: double.parse(rhReturnController.text),
-                    weight: double.parse(weightController.text),
-                    ptppn: double.parse(ptppmController.text),
-                    ptgram: double.parse(ptController.text),
-                    rhppn: double.parse(rhppmController.text),
-                    rhgram: double.parse(rhController.text))
+                        pdppn: double.parse(pdppmController.text),
+                        pdgram: double.parse(pdController.text),
+                        pdreturn: double.parse(pdReturnController.text),
+                        ptreturn: double.parse(ptReturnController.text),
+                        rhreturn: double.parse(rhReturnController.text),
+                        weight: double.parse(weightController.text),
+                        ptppn: double.parse(ptppmController.text),
+                        ptgram: double.parse(ptController.text),
+                        rhppn: double.parse(rhppmController.text),
+                        rhgram: double.parse(rhController.text))
                     .toString();
                 setState(() {});
               }
-
             },
           ),
         ),
@@ -270,7 +304,7 @@ double getPrice({
   required rhgram,
 }) {
   return ((pdppn * weight / 1000 * pdreturn * pdgram) +
-      (ptppn * weight / 1000 * ptreturn * ptgram) +
-      (rhppn * weight / 1000 * rhreturn * rhgram)) *
+          (ptppn * weight / 1000 * ptreturn * ptgram) +
+          (rhppn * weight / 1000 * rhreturn * rhgram)) *
       exchange;
 }

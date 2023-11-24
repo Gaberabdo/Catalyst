@@ -1,13 +1,11 @@
-import 'package:cat_price/features/Authentication/presention/views/widgets/customTextField.dart';
-import 'package:cat_price/features/conect%20us-feature/component/Text%20from-component.dart';
+import 'package:cat_price/features/cat-price-feature/presentation/price_list/price_list_screen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_price/features/cat-price-feature/presentation/price_list/price_list_screen.dart';
+
 
 import '../../../../core/core-price-cat/models/search_model.dart';
 import '../../../../core/core-price-cat/resources/color_manager.dart';
-
 import '../../../../core/core-price-cat/resources/commen_widget/network_image.dart';
 import '../../../../core/core-price-cat/resources/navigation.dart';
 import '../../../../core/core-price-cat/resources/value_manager.dart';
@@ -35,64 +33,50 @@ class _SearchScreenState extends State<SearchScreen> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: ColorManager.white,
-            title: Text(S.of(context).searchItem),
+            title:  Text(S.of(context).searchItem),
             centerTitle: true,
           ),
           body: Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Card(
-              //     color: ColorManager.white,
-              //     elevation: 0.5,
-              //     child: TextFormField(
-              //       style: TextStyle(color: ColorManager.primary),
-              //       controller: _searchController,
-              //       cursorColor: ColorManager.primary,
-              //       decoration: InputDecoration(
-              //           labelStyle: TextStyle(color: ColorManager.primary),
-              //           hintText: S.of(context).searchItem,
-              //           labelText: S.of(context).searchItem,
-              //           prefixIcon: const Icon(Icons.search),
-              //           border: InputBorder.none),
-              //       onChanged: (value) {
-              //       },
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: MyTextField(
-                  hintText: S.of(context).searchItem,
-                  emailController: _searchController,
-                  onChanged: (p0) {
-                    cubit.searchForItem(searchTerm: p0.toString());
-                  },
-                  prefixIcon: const Icon(Icons.search),
+                child: Card(
+                  color: ColorManager.white,
+                  elevation: 0.5,
+                  child: TextFormField(
+                    style: TextStyle(color: ColorManager.primary),
+                    controller: _searchController,
+                    cursorColor: ColorManager.primary,
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(color: ColorManager.primary),
+                        hintText: S.of(context).searchItem,
+                        labelText: S.of(context).searchItem,
+                        prefixIcon: const Icon(Icons.search),
+                        border: InputBorder.none),
+                    onChanged: (value) {
+                      cubit.searchForItem(searchTerm: value.toString());
+                    },
+                  ),
                 ),
               ),
               Expanded(
                 child: ConditionalBuilder(
                     condition: cubit.searchModelList.isEmpty,
-                    builder: (context) =>
-                        Center(child: Text(S.of(context).noItem)),
-                    fallback: (context) {
-                      if (state is SearchForItemLodingState) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                          color: ColorManager.primary,
-                        ));
-                      } else {
+                    builder: (context)=> Center(child: Text(S.of(context).noItem)),
+                    fallback: (context){
+                      if(state is SearchForItemLodingState) {
+                        return  Center(child: CircularProgressIndicator(color: ColorManager.primary,));
+                      } else
+                      {
                         return ListView.separated(
-                            itemBuilder: (context, index) => itemSearchList(
-                                model: cubit.searchModelList[index]),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                                  height: AppSize.s8,
-                                ),
+                            itemBuilder: (context, index) => itemSearchList(model: cubit.searchModelList[index]),
+                            separatorBuilder: (context, index) => const SizedBox(
+                              height: AppSize.s8,
+                            ),
                             itemCount: cubit.searchModelList.length);
                       }
-                    }),
+                    }
+                ),
               )
             ],
           ),
@@ -114,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ClipRRect(
               borderRadius:
                   const BorderRadiusDirectional.all(Radius.circular(5)),
-              child: getImageFromNetwork(path: model.image?.url ?? ''),
+              child: getImageFromNetwork(path: model.image?.url??''),
             ),
             const SizedBox(
               width: AppSize.s12,
@@ -147,10 +131,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               padding: const EdgeInsets.only(
                                   right: 5, left: 5, top: 5, bottom: 5)),
                           onPressed: () {
-                            PriceCubit.get(context)
-                                .addNewPriceItem(item: model);
-                            Navigation.navigatorTo(
-                                context, const PriceListScreen());
+                            PriceCubit.get(context).addNewPriceItem(item: model);
+                            Navigation.navigatorTo(context, const PriceListScreen());
                           },
                           child: Text(
                             'Add To List',

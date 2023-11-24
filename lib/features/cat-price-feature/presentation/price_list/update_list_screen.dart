@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+
 import '../../../../core/core-price-cat/resources/color_manager.dart';
+
 
 import '../../../../core/core-price-cat/resources/commen_widget/price_list_widget.dart';
 import '../../../../core/core-price-cat/resources/commen_widget/show_save_dialog.dart';
@@ -33,7 +35,7 @@ class _UpdateListScreenState extends State<UpdateListScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<PriceCubit, PriceState>(
       listener: (context, state) {
-        // TODO: implement listener
+
       },
       builder: (context, state) {
         var cubit =PriceCubit.get(context);

@@ -35,9 +35,7 @@ class InboxScreen extends StatelessWidget {
                 ),
               ),
               body: Center(
-                child: CircularProgressIndicator(
-                  color: Colors.yellow.shade600,
-                ),
+                child:  Image.network('https://img.freepik.com/free-vector/empty-concept-illustration_114360-7416.jpg?size=626&ext=jpg&ga=GA1.1.300119709.1700780082&semt=sph'),
               ),
             );
           } else if (state is InboxSucess) {
@@ -56,25 +54,37 @@ class InboxScreen extends StatelessWidget {
                 ),
                 body: ListView.builder(
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('${cubit.brandsJson[index]}'),
+
+                    if(cubit.brandsJson.isEmpty){
+                      return Image.network('https://img.freepik.com/free-vector/empty-concept-illustration_114360-7416.jpg?size=626&ext=jpg&ga=GA1.1.300119709.1700780082&semt=sph');
+                    }
+                    else if(cubit.brandsJson.isNotEmpty){
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('${cubit.brandsJson[index]}'),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
+                    else {
+
+                    }
                   },
                   shrinkWrap: true,
                   itemCount: cubit.brandsJson.length,
                 ));
-          } else {
-            return Center(child: Text('Check Data '));
+          } else if(state is InboxErorr) {
+            return Image.network('https://img.freepik.com/free-vector/empty-concept-illustration_114360-7416.jpg?size=626&ext=jpg&ga=GA1.1.300119709.1700780082&semt=sph');
+          }
+          else{
+            return Image.network('https://img.freepik.com/free-vector/empty-concept-illustration_114360-7416.jpg?size=626&ext=jpg&ga=GA1.1.300119709.1700780082&semt=sph');
           }
         },
       ),

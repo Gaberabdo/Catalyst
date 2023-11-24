@@ -130,6 +130,27 @@
 
     "Screen1" : "Welcome to a world of features that you will not find in other programs",
     "Screen2" : "Enjoy and browse a huge amount of catalysts, brands, electronics and more to come",
-    "Screen3" : "We will provide you with a unique experience among the programs to see the best prices and the most powerful features with low subscriptions and sustainable development"
+    "Screen3" : "We will provide you with a unique experience among the programs to see the best prices and the most powerful features with low subscriptions and sustainable development",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "subscription": "Subscription",
+      "goldSubscription": "Gold Subscription",
+      "platinumSubscription": "Platinum Subscription",
+      "broSubscription": "Bro Subscription",
+      "fullSearch": "Full Search",
+      "users": "Users",
+      "myCatalog": "My Catalog",
+      "calculator": "Calculator",
+      "payNow": "Pay Now",
+      "username": "Username",
+      "subscriptionType": "Subscription Type",
+      "paymentMethod": "Payment Method",
+      "accountNumberOrName": "Account Number/Name",
+      "paymentHistory": "Payment History",
+      "cost": "Cost",
+      "submit": "Submit",
+      "search": "Search",
+  "catPrice": "Cat Price"
+
 
 }

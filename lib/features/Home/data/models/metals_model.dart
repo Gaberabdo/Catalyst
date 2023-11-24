@@ -1,11 +1,11 @@
 class MetalItem {
   String? id;
-  int? pd;
-  int? pt;
-  int? rh;
-  List<int> pdDaily;
-  List<int> ptDaily;
-  List<int> rhDaily;
+  dynamic? pd;
+  dynamic? pt;
+  dynamic? rh;
+  List<dynamic> pdDaily;
+  List<dynamic> ptDaily;
+  List<dynamic> rhDaily;
 
 
   MetalItem({
@@ -25,9 +25,9 @@ class MetalItem {
       pd: json['pd'],
       pt: json['pt'],
       rh: json['rh'],
-      pdDaily: List<int>.from(json['pdDaily']),
-      ptDaily: List<int>.from(json['ptDaily']),
-      rhDaily: List<int>.from(json['rhDaily']),
+      pdDaily: List<dynamic>.from(json['pdDaily']),
+      ptDaily: List<dynamic>.from(json['ptDaily']),
+      rhDaily: List<dynamic>.from(json['rhDaily']),
 
     );
   }

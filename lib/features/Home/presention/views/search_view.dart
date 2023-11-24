@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart%20';
 import 'package:cat_price/features/Authentication/presention/views/widgets/customTextField.dart';
@@ -83,9 +85,23 @@ class SearchView extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                         itemBuilder: (context, index) {
-                          return FavouriteItem(
-                            item: items[index],
-                            cubit: cubit,
+                          return InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomDialog(
+                                    index: index,
+                                    item: items,
+                                    cubit: cubit,
+                                  ); // Your custom dialog
+                                },
+                              );
+                            },
+                            child: FavouriteItem(
+                              item: items[index],
+                              cubit: cubit,
+                            ),
                           );
                         },
                         itemCount: items.length,
@@ -103,7 +119,6 @@ class SearchView extends StatelessWidget {
     );
   }
 }
-
 
 class FavouriteItem extends StatefulWidget {
   const FavouriteItem({
@@ -153,8 +168,8 @@ class _FavouriteItemState extends State<FavouriteItem> {
                     widget.item.image == null
                         ? "https://img.freepik.com/premium-vector/flat-design-no-photo-sign_23-2149259324.jpg?w=740"
                         : widget.item.image is String
-                        ? widget.item.image
-                        : widget.item.image!.url.toString(),
+                            ? widget.item.image
+                            : widget.item.image!.url.toString(),
                   ),
                   fit: BoxFit.fill,
                 ),
@@ -228,6 +243,192 @@ class _FavouriteItemState extends State<FavouriteItem> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomDialog extends StatefulWidget {
+  CustomDialog({
+    super.key,
+    required this.item,
+    required this.index,
+    required this.cubit,
+  });
+  List<Item> item;
+  dynamic index;
+  final MetalsCubit cubit;
+
+  @override
+  State<CustomDialog> createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends State<CustomDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.item[widget.index].imageList.isEmpty
+                ? Container(
+                    width: double.infinity,
+                    height: 200,
+                    alignment: AlignmentDirectional.center,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          widget.item[widget.index].image == null
+                              ? "https://img.freepik.com/premium-vector/flat-design-no-photo-sign_23-2149259324.jpg?w=740"
+                              : widget.item[widget.index].image is String
+                                  ? widget.item[widget.index].image
+                                  : widget.item[widget.index].image!.url
+                                      .toString(),
+                        ),
+                      ),
+                    ),
+                  )
+                : CarouselSlider(
+                    items: widget.item[widget.index].imageList.map((e) {
+                      return Container(
+                        width: double.infinity,
+                        height: 200,
+                        alignment: AlignmentDirectional.center,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(e.url),
+                        )),
+                      );
+                    }).toList(),
+                    options: CarouselOptions(
+                      autoPlayAnimationDuration: const Duration(seconds: 1),
+                      autoPlayCurve: Curves.linear,
+                      height: 200,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 4),
+                      enableInfiniteScroll: true,
+                      initialPage: 0,
+                      reverse: false,
+                      viewportFraction: 1.0,
+                    ),
+                  ),
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.item[widget.index].name.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Color(0xFF110317),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      widget.item[widget.index].price.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Color(0xFFFBC821),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width * .4,
+                      child: Text(
+                        widget.item[widget.index].brand.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Color(0xFF9094A0),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: () {
+                    print('object');
+                    widget.item[widget.index].isFavorite =
+                        !widget.item[widget.index].isFavorite!;
+                    widget.cubit.addFav(
+                      itemId: widget.item[widget.index].id,
+                      favListId: widget.cubit.idFavList,
+                    );
+                    setState(() {});
+                  },
+                  icon: Icon(
+                    widget.item[widget.index].isFavorite == true
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: widget.item[widget.index].isFavorite == true
+                        ? Color(0xffFBC821)
+                        : Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          children: [
+            Expanded(
+                child: OutlinedButton(
+              onPressed: () {
+                widget.item[widget.index].isFavorite =
+                    !widget.item[widget.index].isFavorite!;
+                widget.cubit.addFav(
+                  itemId: widget.item[widget.index].id,
+                  favListId: widget.cubit.idFavList,
+                );
+                setState(() {});
+                Navigator.pop(context);
+              },
+              child: Text(
+                !widget.item[widget.index].isFavorite!
+                    ? "Add to Favorite"
+                    : "Remove from Favorite",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: !widget.item[widget.index].isFavorite!
+                        ? Colors.black
+                        : Colors.amber),
+              ),
+            )),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+                child: OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Cancel",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.red),
+              ),
+            )),
+          ],
+        ),
+      ],
     );
   }
 }

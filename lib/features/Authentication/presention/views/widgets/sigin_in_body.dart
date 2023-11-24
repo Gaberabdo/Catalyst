@@ -45,7 +45,7 @@ class _SignInBodyState extends State<SignInBody> {
           AppFunction.showErrorORWarningDialog(
             context: context,
             subtitle: state.error,
-            fct: (){},
+            fct: () {},
           );
         }
       },
@@ -164,9 +164,14 @@ class _SignInBodyState extends State<SignInBody> {
                     ),
                     TextButton(
                         onPressed: () {
-                          Get.to(() => const SignUpView(),
-                              transition: Transition.rightToLeft,
-                              duration: const Duration(milliseconds: 400));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return SignUpView();
+                              },
+                            ),
+                          );
                         },
                         child: Text(
                           S.of(context).Signup,

@@ -1277,6 +1277,196 @@ class S {
       args: [],
     );
   }
+
+  /// `Yearly`
+  String get yearly {
+    return Intl.message(
+      'Yearly',
+      name: 'yearly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monthly`
+  String get monthly {
+    return Intl.message(
+      'Monthly',
+      name: 'monthly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription`
+  String get subscription {
+    return Intl.message(
+      'Subscription',
+      name: 'subscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gold Subscription`
+  String get goldSubscription {
+    return Intl.message(
+      'Gold Subscription',
+      name: 'goldSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Platinum Subscription`
+  String get platinumSubscription {
+    return Intl.message(
+      'Platinum Subscription',
+      name: 'platinumSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bro Subscription`
+  String get broSubscription {
+    return Intl.message(
+      'Bro Subscription',
+      name: 'broSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Search`
+  String get fullSearch {
+    return Intl.message(
+      'Full Search',
+      name: 'fullSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get users {
+    return Intl.message(
+      'Users',
+      name: 'users',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Catalog`
+  String get myCatalog {
+    return Intl.message(
+      'My Catalog',
+      name: 'myCatalog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculator`
+  String get calculator {
+    return Intl.message(
+      'Calculator',
+      name: 'calculator',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay Now`
+  String get payNow {
+    return Intl.message(
+      'Pay Now',
+      name: 'payNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription Type`
+  String get subscriptionType {
+    return Intl.message(
+      'Subscription Type',
+      name: 'subscriptionType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment Method`
+  String get paymentMethod {
+    return Intl.message(
+      'Payment Method',
+      name: 'paymentMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account Number/Name`
+  String get accountNumberOrName {
+    return Intl.message(
+      'Account Number/Name',
+      name: 'accountNumberOrName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment History`
+  String get paymentHistory {
+    return Intl.message(
+      'Payment History',
+      name: 'paymentHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cost`
+  String get cost {
+    return Intl.message(
+      'Cost',
+      name: 'cost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get submit {
+    return Intl.message(
+      'Submit',
+      name: 'submit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cat Price`
+  String get catPrice {
+    return Intl.message(
+      'Cat Price',
+      name: 'catPrice',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

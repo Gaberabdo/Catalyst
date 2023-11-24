@@ -1,7 +1,7 @@
+import 'package:cat_price/features/cat-price-feature/presentation/price_list/update_list_screen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_price/features/cat-price-feature/presentation/price_list/update_list_screen.dart';
 
 import '../../../../core/core-price-cat/models/my_list_model.dart';
 import '../../../../core/core-price-cat/models/search_model.dart';
@@ -12,6 +12,7 @@ import '../../../../core/core-price-cat/resources/navigation.dart';
 import '../../../../core/core-price-cat/resources/value_manager.dart';
 import '../../../../generated/l10n.dart';
 import '../../controller/cubit/price_list_cubit/price_cubit.dart';
+
 
 class MyListScreen extends StatefulWidget {
   const MyListScreen({Key? key}) : super(key: key);
@@ -96,7 +97,9 @@ class _MyListScreenState extends State<MyListScreen> {
                         ),
                       ));
                       //await Future.delayed( Duration(seconds: (model.listOfItems?.length)!*5));
+                      print(model.toString());
                       generatePdf(context, model: model);
+
                       Navigator.pop(context);
                     },
                     child: Icon(

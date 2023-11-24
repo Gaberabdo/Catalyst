@@ -1,9 +1,9 @@
 class WeekModel {
-  bool success;
-  int code;
-  List<double> pdHistory;
-  List<double> ptHistory;
-  List<double> rhHistory;
+  final bool success;
+  final int code;
+  final List<double> pdHistory;
+  final List<double> ptHistory;
+  final List<double> rhHistory;
 
   WeekModel({
     required this.success,
@@ -17,19 +17,15 @@ class WeekModel {
     return WeekModel(
       success: json['success'],
       code: json['code'],
-      pdHistory: List<double>.from(json['pdHistory']),
-      ptHistory: List<double>.from(json['ptHistory']),
-      rhHistory: List<double>.from(json['rhHistory']),
+      pdHistory: (json['pdHistory'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
+      ptHistory: (json['ptHistory'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
+      rhHistory: (json['rhHistory'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'code': code,
-      'pdHistory': pdHistory,
-      'ptHistory': ptHistory,
-      'rhHistory': rhHistory,
-    };
   }
 }

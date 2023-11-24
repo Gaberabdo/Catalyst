@@ -56,7 +56,11 @@ class BrandScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return ScreenDetailsBrand(name: state.brand[index].name!);
+                                  return ScreenDetailsBrand(
+                                    name: state.brand[index].name!,
+                                    brand: state.brand[index],
+                                    index: index,
+                                  );
                                 },
                               ),
                             );

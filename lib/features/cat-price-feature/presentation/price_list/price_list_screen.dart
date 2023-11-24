@@ -1,7 +1,7 @@
+import 'package:cat_price/features/cat-price-feature/presentation/price_list/search_screen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_price/features/cat-price-feature/presentation/price_list/search_screen.dart';
 
 import '../../../../core/core-price-cat/resources/assets_manager.dart';
 import '../../../../core/core-price-cat/resources/color_manager.dart';

@@ -4,17 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:http_parser/http_parser.dart';
 
 import '../../../../../core/SharedPreference.dart';
 import '../../../../../core/core-price-cat/models/my_list_model.dart';
 import '../../../../../core/core-price-cat/models/search_model.dart';
 import '../../../../../core/core-price-cat/network/remote/dio_helper.dart';
 import '../../../../../core/core-price-cat/resources/commen_widget/server_message.dart';
-
 
 part 'price_state.dart';
 
@@ -77,10 +75,10 @@ class PriceCubit extends Cubit<PriceState> {
 
   void calculateTotalPrice() {
     totalPrice = 0;
-    myItems=0;
+    myItems = 0;
     newPriceList.forEach((element) {
       totalPrice += ((element.price)! * (element.quantity ?? 0));
-      myItems+=element.quantity!;
+      myItems += element.quantity!;
     });
   }
 
@@ -96,7 +94,7 @@ class PriceCubit extends Cubit<PriceState> {
       });
     });
     DioFinalHelper.postData(url: 'api/v1/user/list/create', data: {
-      "userId": Preference.getData(key: 'userId'),
+      "userId": "${Preference.getData(key: 'userId')}",
       "numOfItems": myItems,
       "totalPrice": totalPrice,
       "listName": listName,
@@ -128,17 +126,20 @@ class PriceCubit extends Cubit<PriceState> {
         'quantity': element.quantity
       });
     });
-    DioFinalHelper.putData(url: 'api/v1/user/list/update?listId=$listId', data: {
-      "numOfItems": myItems,
-      "totalPrice": totalPrice,
-      "listName": listName,
-      "listOfItems": dataList
-    }).then((value) {
+    DioFinalHelper.putData(
+        url: 'api/v1/user/list/update?listId=$listId',
+        data: {
+          "numOfItems": myItems,
+          "totalPrice": totalPrice,
+          "listName": listName,
+          "listOfItems": dataList
+        }).then((value) {
       Navigator.pop(context);
       newPriceList = [];
       myItems = 0;
       totalPrice = 0;
       emit(UpdateListSuccessState());
+      getAllLists();
     }).catchError((error) {
       if (kDebugMode) {
         print(error.toString());
@@ -157,7 +158,7 @@ class PriceCubit extends Cubit<PriceState> {
     //TODO change UserId
     DioFinalHelper.getData(
         url: 'api/v1/user/list/get',
-        data: {'userId': Preference.getData(key: 'userId')}).then((value) {
+        data: {'userId': '${Preference.getData(key: 'userId')}'}).then((value) {
       allMyList = [];
       value.data['lists'].forEach((element) {
         allMyList.add(Lists.fromJson(element));
@@ -191,17 +192,14 @@ class PriceCubit extends Cubit<PriceState> {
   File itemImage = File('');
   final ImagePicker picker = ImagePicker();
 
-  Future<void> selectItemImage(context,{required bool isCamera}) async {
+  Future<void> selectItemImage(context, {required bool isCamera}) async {
     emit(SelectItemImageLodingState());
     final pickedFile;
-    if(isCamera==true)
-      {
-        pickedFile = await picker.pickImage(source: ImageSource.camera);
-      }
-    else
-      {
-         pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      }
+    if (isCamera == true) {
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
     if (pickedFile != null) {
       emit(SelectItemImageSuccessState());
       Navigator.pop(context);
@@ -215,11 +213,14 @@ class PriceCubit extends Cubit<PriceState> {
   void createItem(context, {required String name, required int price}) {
     //TODO change UserId
     emit(CreateItemLodingState());
-    DioFinalHelper.postData(url: 'api/v1/user/item/create', data: {
-      "userId": Preference.getData(key: 'userId'),
-      "name": name,
-      "price": price
-    }).then((value) {
+    DioFinalHelper.postData(
+      url: 'api/v1/user/item/create',
+      data: {
+        "userId": "${Preference.getData(key: 'userId')}",
+        "name": name,
+        "price": price
+      },
+    ).then((value) {
       emit(CreateItemSuccessState());
       uploadImageItem(context, id: value.data['item']['_id']);
     }).catchError((error) {
@@ -242,16 +243,13 @@ class PriceCubit extends Cubit<PriceState> {
       ),
     });
     DioFinalHelper.postData(
-            content:
-                "multipart/form-data",
+            content: "multipart/form-data",
             url: 'api/v1/user/item/image',
-            query: {
-              '_id':id
-            },
+            query: {'_id': id},
             data: fromData)
         .then((value) {
-       Items it = Items();
-       it=Items.fromJson(value.data['item']);
+      Items it = Items();
+      it = Items.fromJson(value.data['item']);
       // it.sId = value.data['item']['_id'];print(value.data['item']['_id']);
       // it.name = value.data['item']['name'];print(value.data['item']['name']);
       // it.image = value.data['item']['image'];print(value.data['item']['image']);

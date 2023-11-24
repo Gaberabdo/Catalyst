@@ -14,6 +14,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../../core/SharedPreference.dart';
 import '../../../../Calculater/presention/views/calculater_view.dart';
+import '../../../../subscripation-feature/subscription_view/subscription_home_page.dart';
 import '../Favourite_view.dart';
 import '../search_view.dart';
 import 'drawer_item.dart';
@@ -74,7 +75,7 @@ class DrawerBody extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  SearchView(),
+                    builder: (context) => SearchView(),
                   ));
             },
           ),
@@ -120,7 +121,7 @@ class DrawerBody extends StatelessWidget {
             text: S.of(context).Brands,
             ontab: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return  BrandScreen();
+                return BrandScreen();
               }));
             },
           ),
@@ -149,9 +150,8 @@ class DrawerBody extends StatelessWidget {
             icon: Icons.settings,
             text: S.of(context).Settings,
             ontab: () {
-
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return  SettingScreen();
+                return SettingScreen();
               }));
             },
           ),
@@ -160,14 +160,24 @@ class DrawerBody extends StatelessWidget {
             icon: Icons.share,
             text: S.of(context).Shareapp,
             ontab: () {
-              Share.share("https://play.google.com/store/apps/details?id=com.example.cat_price");
+              Share.share(
+                  "https://play.google.com/store/apps/details?id=com.example.cat_price");
             },
           ),
           const Spacer(),
           DrawerItem(
             icon: Icons.subscriptions,
             text: S.of(context).Subscriptions,
-            ontab: () {},
+            ontab: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SubscriptionHomePage();
+                  },
+                ),
+              );
+            },
           ),
           const Spacer(),
           DrawerItem(

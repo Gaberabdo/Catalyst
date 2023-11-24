@@ -47,22 +47,20 @@ class SettingCubit extends Cubit<SettingState> {
     emit(GetBrandLoading());
     try {
       Response response = await DioHelper.getData(
-        url: "${ApiConst.baseUrl}admin/brand/list?name=$name",
+        url: "${ApiConst.baseUrl}admin/item/list?brand=$name",
         options: Options(
           headers: {
             // 'Authorization': 'Bearer ${Preference.getData(key: "token")}',
-
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTNmYzg1ZjdiY2UwOTJlYjViYjU2OTMiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluNTBAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4Njc4OTA2LCJleHAiOjE3MDEyNzA5MDZ9.DUqsYcEQcTQCKQLIqebNCAB2hwimj1_ze0OjrurkOXc',
             'x-app-token': 'Catalyst-Team'
           },
         ),
       );
-      print(response.data["brands"]);
+      print(response.data["Items"]);
       emit(GetBrandSuccess(List<Brand>.from(
-          (response.data["brands"] as List).map((e) => Brand.fromJson(e)))));
+          (response.data["Items"] as List).map((e) => Brand.fromJson(e)))));
       return List<Brand>.from(
-          (response.data["brands"] as List).map((e) => Brand.fromJson(e)));
+          (response.data["Items"] as List).map((e) => Brand.fromJson(e)));
     } on DioException catch (error) {
       emit(GetBrandError());
       return List<Brand>.empty();
@@ -76,11 +74,11 @@ class SettingCubit extends Cubit<SettingState> {
   }) {
     if (fromSharedLang != null) {
       language = fromSharedLang;
-      emit(RadioState());
+      emit(RadioState(language!));
     } else {
       language = langMode;
       Preference.saveData(key: "language", value: langMode);
-      emit(RadioState());
+      emit(RadioState(language!));
     }
   }
 
@@ -131,7 +129,7 @@ class SettingCubit extends Cubit<SettingState> {
       return LoginModel.fromJson(error as Map<String, dynamic>);
     }
   }
-
+  // gaber122888
   Future changePassword({
     required String id,
     required String oldPassword,
@@ -219,6 +217,6 @@ class SettingCubit extends Cubit<SettingState> {
 
   void updateRadioValue(String value) {
     selectedValue = value;
-    emit(RadioState());
+    emit(UpdateRadioValue());
   }
 }
