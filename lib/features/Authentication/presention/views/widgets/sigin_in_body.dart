@@ -137,7 +137,7 @@ class _SignInBodyState extends State<SignInBody> {
                     text: S.of(context).Signin,
                     ontab: () async {
                       if (formkey.currentState!.validate()) {
-                        await bloc.BlocProvider.of<AuthCubit>(context).Signin(
+                        await bloc.BlocProvider.of<AuthCubit>(context).SignIn(
                             email: email.toString(),
                             password: password.toString());
                       } else {

@@ -77,8 +77,8 @@ class SettingCubit extends Cubit<SettingState> {
       emit(RadioState(language!));
     } else {
       language = langMode;
-      Preference.saveData(key: "language", value: langMode);
-      emit(RadioState(language!));
+      Preference.saveData(key: "language", value: langMode ?? 'en');
+      emit(RadioState(language ?? 'en'));
     }
   }
 

@@ -392,8 +392,8 @@ class SettingScreen extends StatelessWidget {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color.fromRGBO(227, 29, 28, 1),
-                                    onPrimary: Colors.white,
+                                    backgroundColor: Color.fromRGBO(227, 29, 28, 1),
+                                    foregroundColor: Colors.white,
                                     elevation: 3,
                                     shape: (RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),

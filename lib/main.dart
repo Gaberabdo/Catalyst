@@ -51,7 +51,6 @@ class MyApp extends StatelessWidget {
   final Widget widget;
   @override
   Widget build(BuildContext context) {
-    String lang = 'en';
 
     return MultiBlocProvider(
       providers: [
@@ -80,10 +79,7 @@ class MyApp extends StatelessWidget {
           ),
         child: BlocConsumer<SettingCubit, SettingState>(
           listener: (context, state) {
-            if (state is RadioState) {
-              lang = state.lang;
-              print(lang);
-            }
+
           },
           builder: (context, state) {
             var cubit = SettingCubit.get(context);
@@ -96,7 +92,7 @@ class MyApp extends StatelessWidget {
                   foregroundColor: Colors.black,
                 ),
               ),
-              locale: (state is RadioState) ? Locale(state.lang) : Locale('en'),
+              locale: cubit.language == 'ar' ? Locale('ar') : Locale('en'),
               localizationsDelegates: const [
                 S.delegate,
                 GlobalMaterialLocalizations.delegate,

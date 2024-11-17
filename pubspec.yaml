@@ -24,7 +24,6 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   shared_preferences: ^2.2.2
   fl_chart: ^0.64.0
-  intl: ^0.18.1
   dio: ^5.3.3
   get:
   image_picker: ^1.0.4

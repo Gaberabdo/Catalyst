@@ -25,9 +25,7 @@ class _SignInBodyState extends State<SignUpBody> {
 
   String? email;
   String? name;
-  String? phone;
   String? password;
-  String? countryName;
 
   var countryController = TextEditingController();
 
@@ -91,14 +89,7 @@ class _SignInBodyState extends State<SignUpBody> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  hinttext: S.of(context).EnterYourPhoneNumber,
-                  phone: true,
-                  onchanged: (p0) {
-                    phone = p0;
-                  },
-                ),
+
                 const SizedBox(height: 20),
                 Text(
                   S.of(context).Email,
@@ -140,32 +131,7 @@ class _SignInBodyState extends State<SignUpBody> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 10),
-                MyTextField(
-                  hintText: S.of(context).SelectYourCountry,
-                  emailController: countryController,
-                  onChanged: (p0) {
-                    countryName = p0;
-                    setState(() {});
-                  },
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.keyboard_arrow_down_sharp),
-                    onPressed: () {
-                      showCountryPicker(
-                        context: context,
-                        useSafeArea: true,
-                        showPhoneCode:
-                            true, // optional. Shows phone code before the country name.
-                        onSelect: (Country country) {
-                          countryName = country.name.toString();
-                          countryController.text = country.name.toString();
-                          setState(() {});
-                          print('Select country: ${country.displayName}');
-                        },
-                      );
-                    },
-                  ),
-                ),
+
                 const SizedBox(height: 30),
                 ConditionalBuilder(
                   condition: state is! LoadingSignUp,
@@ -177,8 +143,7 @@ class _SignInBodyState extends State<SignUpBody> {
                             password: password!,
                             email: email!,
                             name: name!,
-                            phone: phone!,
-                            country: countryName!,
+
                           );
                         } else {
                           autovalidateMode = AutovalidateMode.always;

@@ -122,9 +122,9 @@ class ConnectUsScreen extends StatelessWidget {
                                         Navigator.pop(context);
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: const Color.fromRGBO(
+                                        backgroundColor: const Color.fromRGBO(
                                             251, 200, 33, 1),
-                                        onPrimary: Colors.white,
+                                        foregroundColor: Colors.white,
                                         elevation: 3,
                                         shape: (RoundedRectangleBorder(
                                           borderRadius:
